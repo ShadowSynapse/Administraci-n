@@ -1,23 +1,16 @@
 {
   "rules": {
     "vendors": {
-      ".read":  "auth != null",
-      ".write": "auth != null",
-      "$id": {
-        ".read":  "auth != null",
-        ".write": "auth != null"
-      }
+      ".read": true,
+      ".write": true
     },
     "keys": {
-      ".read":  "auth != null",
-      "$id": {
-        ".read":  true,
-        ".write": "auth != null"
-      }
+      ".read": true,
+      ".write": true
     },
     "log": {
-      ".read":  "auth != null",
-      ".write": "auth != null"
+      ".read": true,
+      ".write": true
     }
   }
 }

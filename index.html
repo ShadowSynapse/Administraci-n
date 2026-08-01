@@ -2,8 +2,12 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Shadow Chams — Reseller Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#09090f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Shadow Chams — Vendor Manager</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
@@ -13,279 +17,391 @@
   --glow:rgba(124,92,252,0.18);--text:#e2e2f0;--muted:#6b6b8a;
   --danger:#fc5c7c;--success:#5cfc9a;--warn:#fcc05c;
   --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
-  --r:10px;--r-lg:14px;--nav-h:56px;--bnav:64px;
+  --r:10px;--r-lg:14px;--nav-h:56px;--bnav:0px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:14px;-webkit-tap-highlight-color:transparent}
-body{background:var(--void);color:var(--text);font-family:var(--sans);min-height:100dvh;overflow-x:hidden;padding-bottom:var(--bnav)}
+html{font-size:14px;-webkit-tap-highlight-color:transparent;height:-webkit-fill-available;touch-action:pan-y}
+body{background:var(--void);color:var(--text);font-family:var(--sans);min-height:100dvh;min-height:-webkit-fill-available;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.06) 2px,rgba(0,0,0,0.06) 4px);pointer-events:none;z-index:9999}
 
-/* ── LOGIN SCREEN ── */
+/* ── LOGIN ── */
 #login-screen{position:fixed;inset:0;background:var(--void);z-index:8000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;gap:2rem}
-.login-logo{font-family:var(--mono);font-size:1.1rem;font-weight:600;color:var(--accent);letter-spacing:0.1em;display:flex;align-items:center;gap:0.6rem}
+.login-logo{font-family:var(--mono);font-size:1rem;font-weight:600;color:var(--accent);letter-spacing:.1em;display:flex;align-items:center;gap:.6rem}
 .login-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent);animation:pulse 2s infinite}
 .login-box{width:100%;max-width:380px;background:var(--panel);border:1px solid var(--border-lit);border-radius:var(--r-lg);overflow:hidden}
-.login-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);background:rgba(124,92,252,0.06)}
-.login-header h2{font-size:0.95rem;font-weight:600}
-.login-header p{font-size:0.68rem;color:var(--muted);font-family:var(--mono);margin-top:3px}
-.login-body{padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:0.9rem}
-.login-error{background:rgba(252,92,124,0.1);border:1px solid rgba(252,92,124,0.3);color:var(--danger);border-radius:7px;padding:0.65rem 0.9rem;font-family:var(--mono);font-size:0.72rem;display:none}
+.login-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);background:rgba(124,92,252,.06)}
+.login-header h2{font-size:.95rem;font-weight:600}
+.login-header p{font-size:.68rem;color:var(--muted);font-family:var(--mono);margin-top:3px}
+.login-body{padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:.9rem}
+.login-error{background:rgba(252,92,124,.1);border:1px solid rgba(252,92,124,.3);color:var(--danger);border-radius:7px;padding:.65rem .9rem;font-family:var(--mono);font-size:.72rem;display:none}
 .login-error.show{display:block}
-.login-footer{padding:0.9rem 1.5rem;border-top:1px solid var(--border);font-family:var(--mono);font-size:0.6rem;color:var(--muted);text-align:center;letter-spacing:0.06em}
+.login-footer{padding:.9rem 1.5rem;border-top:1px solid var(--border);font-family:var(--mono);font-size:.6rem;color:var(--muted);text-align:center;letter-spacing:.06em}
 
 /* ── HEADER ── */
-header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1rem;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;backdrop-filter:blur(12px)}
-.logo{font-family:var(--mono);font-weight:600;font-size:0.88rem;letter-spacing:0.08em;color:var(--accent);display:flex;align-items:center;gap:0.5rem}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.25rem;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;backdrop-filter:blur(12px)}
+.logo{font-family:var(--mono);font-weight:600;font-size:.88rem;letter-spacing:.08em;color:var(--accent);display:flex;align-items:center;gap:.5rem}
 .logo-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:pulse 2s infinite;flex-shrink:0}
+.logo-sub{font-family:var(--mono);font-size:.58rem;color:var(--muted);letter-spacing:.12em;margin-left:.25rem;padding-left:.6rem;border-left:1px solid var(--border)}
 @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 8px var(--accent)}50%{opacity:.4;box-shadow:0 0 22px var(--accent)}}
-.header-right{display:flex;align-items:center;gap:0.5rem}
-.user-chip{display:flex;align-items:center;gap:0.4rem;font-family:var(--mono);font-size:0.68rem;padding:4px 10px;border-radius:100px;border:1px solid var(--border);cursor:pointer;transition:border-color .2s;background:transparent;color:var(--text)}
-.user-chip:active{border-color:var(--border-lit)}
-.user-avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;flex-shrink:0}
-.role-badge{font-family:var(--mono);font-size:0.58rem;padding:2px 7px;border-radius:100px;letter-spacing:0.08em}
-.role-super{background:rgba(252,192,92,0.15);color:var(--warn);border:1px solid rgba(252,192,92,0.3)}
-.role-admin{background:rgba(124,92,252,0.15);color:var(--accent);border:1px solid rgba(124,92,252,0.3)}
 
-/* ── BOTTOM NAV ── */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:var(--bnav);background:var(--surface);border-top:1px solid var(--border);display:flex;align-items:stretch;z-index:200;backdrop-filter:blur(12px);padding-bottom:env(safe-area-inset-bottom,0)}
-.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.58rem;font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;transition:color .15s;border:none;background:none;padding:0;user-select:none}
-.bn-item .bn-icon{font-size:1.05rem;line-height:1;transition:transform .15s}
-.bn-item:active .bn-icon{transform:scale(.85)}
-.bn-item.active{color:var(--accent)}
-.bn-item.active .bn-icon{text-shadow:0 0 12px var(--accent)}
-.bn-badge{position:absolute;top:-2px;right:-4px;background:var(--danger);color:#fff;font-size:0.5rem;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700}
-.bn-icon-wrap{position:relative;display:inline-block}
+/* ── LAYOUT ── */
+.app-wrap{display:grid;grid-template-columns:240px 1fr;min-height:calc(100dvh - var(--nav-h))}
+@media(max-width:767px){.app-wrap{grid-template-columns:1fr}.sidebar{display:none!important}}
+.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:1.25rem 0;display:flex;flex-direction:column;position:sticky;top:var(--nav-h);height:calc(100dvh - var(--nav-h));overflow-y:auto}
+.sidebar-section{font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;color:var(--muted);padding:.5rem 1.25rem;margin-top:.3rem;text-transform:uppercase}
+.sidebar-item{display:flex;align-items:center;gap:.6rem;padding:.52rem 1.25rem;cursor:pointer;font-size:.8rem;color:var(--muted);transition:all .15s;border-left:2px solid transparent;border-top:none;border-right:none;border-bottom:none;background:transparent;width:100%;text-align:left;font-family:var(--sans)}
+.sidebar-item:hover{color:var(--text);background:rgba(124,92,252,.05)}
+.sidebar-item.active{color:var(--accent);background:rgba(124,92,252,.1);border-left-color:var(--accent)}
+.sidebar-icon{font-size:.82rem;width:18px;text-align:center}
+.sidebar-badge{margin-left:auto;font-family:var(--mono);font-size:.55rem;background:rgba(124,92,252,.15);color:var(--accent);border:1px solid rgba(124,92,252,.3);padding:1px 6px;border-radius:100px}
+.main{padding:1.5rem;display:flex;flex-direction:column;gap:1.25rem;max-width:1000px;width:100%;overflow-x:hidden}
 
-/* ── PAGES ── */
-.page{display:none;flex-direction:column;gap:1rem;padding:1rem;animation:fadeIn .18s ease}
+/* ── MOBILE NAV ── */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:.5rem;z-index:200;backdrop-filter:blur(12px);gap:.35rem;flex-wrap:wrap;justify-content:center}
+@media(max-width:767px){.mobile-nav{display:flex}.main{padding:1rem;padding-bottom:120px}}
+.mnav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:.4rem .7rem;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:var(--mono);font-size:.55rem;cursor:pointer;transition:all .15s;min-width:60px}
+.mnav-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(124,92,252,.1)}
+.mnav-icon{font-size:.95rem}
+
+/* ── PAGE ── */
+.page{display:none;flex-direction:column;gap:1.25rem;animation:fadeIn .18s ease;overflow:visible;width:100%}
 .page.active{display:flex}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.page-title h1{font-size:1.2rem;font-weight:600;letter-spacing:-.01em}
-.page-title p{font-size:.7rem;color:var(--muted);font-family:var(--mono);margin-top:2px}
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.page-title h1{font-size:1.25rem;font-weight:700;letter-spacing:-.015em}
+.page-title p{font-size:.7rem;color:var(--muted);font-family:var(--mono);margin-top:3px}
 
 /* ── STATS ── */
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
-.stat-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);padding:1rem;display:flex;flex-direction:column;gap:.35rem}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem}
+@media(max-width:600px){.stats-row{grid-template-columns:1fr 1fr}}
+.stat-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);padding:1rem;display:flex;flex-direction:column;gap:.3rem}
 .stat-label{font-size:.6rem;color:var(--muted);font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase}
-.stat-value{font-family:var(--mono);font-size:1.55rem;font-weight:600;line-height:1}
+.stat-value{font-family:var(--mono);font-size:1.6rem;font-weight:600;line-height:1}
 .stat-value.accent{color:var(--accent)}.stat-value.success{color:var(--success)}.stat-value.warn{color:var(--warn)}.stat-value.danger{color:var(--danger)}
 
 /* ── CARD ── */
-.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
-.card-header{padding:.9rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:.5rem}
-.card-title{font-size:.8rem;font-weight:600;letter-spacing:.02em;display:flex;align-items:center;gap:.4rem}
-.card-body{padding:1rem}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r-lg);overflow:visible}
+.card-header{padding:.9rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:.5rem;border-radius:var(--r-lg) var(--r-lg) 0 0}
+.card-title{font-size:.82rem;font-weight:600;letter-spacing:.01em;display:flex;align-items:center;gap:.4rem}
+.card-body{padding:1rem;border-radius:0 0 var(--r-lg) var(--r-lg)}
+
+/* ── VENDOR TABLE ── */
+.vendor-table-wrap{overflow-x:auto}
+.vendor-table{width:100%;border-collapse:collapse}
+.vendor-table th{font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;padding:.65rem 1rem;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+.vendor-table td{padding:.75rem 1rem;border-bottom:1px solid var(--border);vertical-align:middle;font-size:.8rem}
+.vendor-table tr:last-child td{border-bottom:none}
+.vendor-table tr.active-row:hover td{background:rgba(124,92,252,.03)}
+.vt-num{font-family:var(--mono);font-size:.65rem;color:var(--muted);width:40px}
+.vt-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0}
+.vt-name-cell{display:flex;align-items:center;gap:.65rem}
+.vt-name{font-weight:600;font-size:.85rem}
+.vt-user{font-family:var(--mono);font-size:.68rem;color:var(--muted);margin-top:1px}
+.vt-pass-wrap{display:flex;align-items:center;gap:.4rem}
+.vt-pass-val{font-family:var(--mono);font-size:.72rem;letter-spacing:.03em;background:var(--void);border:1px solid var(--border);border-radius:5px;padding:3px 8px;color:var(--text);min-width:90px}
+.vt-pass-mask{color:var(--muted);letter-spacing:.1em}
+.vt-actions{display:flex;gap:.35rem;justify-content:flex-end}
+.vt-keys{font-family:var(--mono);font-size:.78rem;color:var(--accent);font-weight:600}
+.vt-status{display:flex;align-items:center;gap:.3rem;font-family:var(--mono);font-size:.62rem}
+.status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* ── VENDOR CARDS (mobile) ── */
+.vendor-cards{display:flex;flex-direction:column;gap:.75rem}
+.vc{background:var(--panel2);border:1px solid var(--border);border-radius:var(--r);padding:.9rem}
+.vc-top{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem}
+.vc-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;flex-shrink:0}
+.vc-name{font-size:.88rem;font-weight:600}
+.vc-user{font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-top:2px}
+.vc-body{display:flex;flex-direction:column;gap:.5rem}
+.vc-row{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.vc-label{font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.vc-actions{display:flex;gap:.4rem;margin-top:.65rem}
 
 /* ── FORM ── */
 .field{display:flex;flex-direction:column;gap:.4rem}
 label,.field-label{display:block;font-size:.65rem;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em}
-select,input[type="text"],input[type="number"],input[type="password"]{width:100%;background:var(--void);border:1px solid var(--border);border-radius:7px;padding:.7rem .9rem;color:var(--text);font-family:var(--mono);font-size:.82rem;outline:none;transition:border-color .2s,box-shadow .2s;appearance:none;-webkit-appearance:none;min-height:44px}
-select:focus,input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}
-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6b8a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .9rem center;padding-right:2.2rem;cursor:pointer}
-.preview-box{background:var(--void);border:1px solid var(--border);border-radius:7px;padding:.75rem .9rem;font-family:var(--mono);font-size:.8rem;min-height:42px;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
-.preview-user{color:var(--accent);font-weight:600}
-.preview-expire{color:var(--muted);font-size:.7rem;margin-left:auto}
-.duration-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem}
+input[type="text"],input[type="number"],input[type="password"]{width:100%;background:var(--void);border:1px solid var(--border);border-radius:7px;padding:.7rem .9rem;color:var(--text);font-family:var(--mono);font-size:.82rem;outline:none;transition:border-color .2s,box-shadow .2s;min-height:44px}
+input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+@media(max-width:500px){.form-grid{grid-template-columns:1fr}}
+.field-hint{font-family:var(--mono);font-size:.6rem;color:var(--muted);margin-top:2px}
 
 /* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.7rem 1.1rem;border-radius:8px;font-family:var(--sans);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .15s;border:none;letter-spacing:.02em;min-height:44px;user-select:none;white-space:nowrap}
 .btn:active{transform:scale(.96)}
-.btn-primary{background:var(--accent);color:#fff;box-shadow:0 0 18px rgba(124,92,252,.35)}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 0 18px rgba(124,92,252,.3)}
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
-.btn-ghost:active{border-color:var(--border-lit);color:var(--text)}
-.btn-danger{background:rgba(252,92,124,.12);border:1px solid rgba(252,92,124,.3);color:var(--danger)}
-.btn-success{background:rgba(92,252,154,.12);border:1px solid rgba(92,252,154,.3);color:var(--success)}
-.btn-warn{background:rgba(252,192,92,.12);border:1px solid rgba(252,192,92,.3);color:var(--warn)}
+.btn-ghost:hover{border-color:var(--border-lit);color:var(--text)}
+.btn-danger{background:rgba(252,92,124,.1);border:1px solid rgba(252,92,124,.3);color:var(--danger)}
+.btn-success{background:rgba(92,252,154,.1);border:1px solid rgba(92,252,154,.3);color:var(--success)}
+.btn-warn{background:rgba(252,192,92,.1);border:1px solid rgba(252,192,92,.3);color:var(--warn)}
 .btn-full{width:100%}
-.btn-sm{padding:.4rem .7rem;font-size:.7rem;border-radius:6px;min-height:36px}
-.btn-xs{padding:.25rem .55rem;font-size:.65rem;border-radius:5px;min-height:28px}
+.btn-sm{padding:.4rem .75rem;font-size:.72rem;min-height:36px;border-radius:6px}
+.btn-xs{padding:.25rem .55rem;font-size:.64rem;border-radius:5px;min-height:28px}
+.btn-icon{width:32px;height:32px;min-height:32px;padding:0;border-radius:6px}
 
-/* ── TABS ── */
-.tab-bar{display:flex;background:var(--void);border:1px solid var(--border);border-radius:8px;padding:3px;gap:3px}
-.tab-btn{flex:1;padding:.5rem;border:none;background:transparent;border-radius:6px;color:var(--muted);font-family:var(--mono);font-size:.68rem;font-weight:600;cursor:pointer;transition:all .15s;letter-spacing:.05em;text-transform:uppercase;min-height:34px}
-.tab-btn.active{background:var(--panel);color:var(--accent);border:1px solid var(--border-lit)}
-.tab-content{display:none;flex-direction:column;gap:.85rem}
-.tab-content.active{display:flex}
-.gen-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem;display:flex;flex-direction:column;gap:.85rem}
-.gen-panel h3{font-size:.68rem;font-family:var(--mono);color:var(--accent);letter-spacing:.12em;text-transform:uppercase}
-
-/* ── USER CARDS (móvil) ── */
-.user-list{display:flex;flex-direction:column;gap:.6rem}
-.user-card{background:var(--panel2);border:1px solid var(--border);border-radius:var(--r);padding:.85rem .9rem;display:flex;flex-direction:column;gap:.55rem}
-.user-card-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
-.user-card-name{font-family:var(--mono);font-weight:600;font-size:.85rem;color:var(--accent)}
-.user-card-by{font-family:var(--mono);font-size:.6rem;color:var(--muted);display:flex;align-items:center;gap:.3rem}
-.user-card-by .mini-avatar{width:14px;height:14px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.5rem;font-weight:700}
-.user-card-mid{display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:wrap}
-.user-card-bottom{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
-.user-card-exp{font-family:var(--mono);font-size:.62rem;color:var(--muted)}
-.user-card-actions{display:flex;gap:.35rem}
-
-/* ── BADGE ── */
-.badge{display:inline-flex;align-items:center;gap:.3rem;padding:3px 8px;border-radius:100px;font-size:.58rem;font-family:var(--mono);font-weight:600;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.badge-15{background:rgba(92,252,154,.1);color:var(--success);border:1px solid rgba(92,252,154,.25)}
-.badge-30{background:rgba(124,92,252,.12);color:var(--accent);border:1px solid rgba(124,92,252,.3)}
-.badge-custom{background:rgba(252,192,92,.1);color:var(--warn);border:1px solid rgba(252,192,92,.25)}
-.badge-expired{background:rgba(252,92,124,.1);color:var(--danger);border:1px solid rgba(252,92,124,.25)}
-.badge-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
-
-/* ── COUNTDOWN ── */
-.countdown{font-family:var(--mono);font-size:.7rem;display:flex;gap:.22rem;align-items:center}
-.cd-part{display:flex;flex-direction:column;align-items:center;gap:1px}
-.cd-val{background:var(--void);border:1px solid var(--border);border-radius:3px;padding:2px 4px;font-size:.72rem;font-weight:600;color:var(--text);min-width:24px;text-align:center}
-.cd-label{font-size:.48rem;color:var(--muted)}
-.cd-sep{color:var(--muted);margin-bottom:8px}
-
-/* ── SEARCH / FILTER ── */
+/* ── SEARCH ── */
 .search-row{display:flex;gap:.5rem;align-items:center}
 .search-wrap{position:relative;flex:1}
 .search-wrap svg{position:absolute;left:.75rem;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--muted)}
-.search-wrap input{padding-left:2rem}
-.filter-bar{display:flex;gap:.35rem;flex-wrap:wrap}
-.filter-chip{padding:4px 10px;border-radius:100px;font-size:.6rem;font-family:var(--mono);border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;min-height:30px}
+.search-wrap input{padding-left:2.2rem}
+
+/* ── FILTER ── */
+.filter-bar{display:flex;gap:.35rem;flex-wrap:wrap;-webkit-overflow-scrolling:touch}
+.filter-chip{padding:4px 12px;border-radius:100px;font-size:.6rem;font-family:var(--mono);border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;min-height:30px}
 .filter-chip.active{border-color:var(--accent);color:var(--accent);background:rgba(124,92,252,.1)}
 
-/* ── LEADERBOARD ── */
-.leaderboard{display:flex;flex-direction:column;gap:.5rem}
-.lb-row{display:flex;align-items:center;gap:.75rem;padding:.8rem .9rem;background:var(--panel2);border:1px solid var(--border);border-radius:var(--r);transition:border-color .15s}
-.lb-row.me{border-color:var(--accent);background:rgba(124,92,252,.06)}
-.lb-rank{font-family:var(--mono);font-size:.75rem;font-weight:700;color:var(--muted);width:22px;text-align:center;flex-shrink:0}
-.lb-rank.gold{color:#ffd700}.lb-rank.silver{color:#c0c0c0}.lb-rank.bronze{color:#cd7f32}
-.lb-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
-.lb-info{flex:1;min-width:0}
-.lb-name{font-size:.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lb-name span{font-family:var(--mono);font-size:.6rem;color:var(--muted);margin-left:.4rem;font-weight:400}
-.lb-sub{font-family:var(--mono);font-size:.62rem;color:var(--muted);margin-top:1px}
-.lb-count{text-align:right;flex-shrink:0}
-.lb-count-val{font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--accent)}
-.lb-count-label{font-family:var(--mono);font-size:.55rem;color:var(--muted)}
-.lb-bar-wrap{height:3px;background:var(--border);border-radius:2px;margin-top:.45rem;overflow:hidden}
-.lb-bar{height:100%;border-radius:2px;background:var(--accent);transition:width .6s ease}
-
-/* ── TABLA VENDEDORES ── */
-.sellers-table{width:100%;border-collapse:collapse;font-size:.75rem}
-.sellers-table th{font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;padding:.5rem .7rem;text-align:left;border-bottom:1px solid var(--border)}
-.sellers-table td{padding:.6rem .7rem;border-bottom:1px solid var(--border);vertical-align:middle}
-.sellers-table tr:last-child td{border-bottom:none}
-.sellers-table tr.me-row td{background:rgba(124,92,252,.06)}
-.seller-name-cell{display:flex;align-items:center;gap:.5rem}
-.seller-mini-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:700;flex-shrink:0}
-.creds-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
-.cred-card{background:var(--void);border:1px solid var(--border);border-radius:8px;padding:.65rem .8rem;display:flex;flex-direction:column;gap:.3rem}
-.cred-num{font-family:var(--mono);font-size:.6rem;color:var(--muted)}
-.cred-user{font-family:var(--mono);font-size:.78rem;font-weight:600;color:var(--accent)}
-.cred-pass{font-family:var(--mono);font-size:.7rem;color:var(--text)}
-.cred-keys{font-family:var(--mono);font-size:.6rem;color:var(--success)}
-.section-label{font-size:.65rem;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem}
-
-/* ── ADMIN MANAGE ── */
-.admin-row{display:flex;align-items:center;gap:.7rem;padding:.8rem .9rem;background:var(--panel2);border:1px solid var(--border);border-radius:var(--r);margin-bottom:.5rem}
-.admin-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0}
-.admin-info{flex:1;min-width:0}
-.admin-name{font-size:.82rem;font-weight:600}
-.admin-meta{font-family:var(--mono);font-size:.62rem;color:var(--muted);margin-top:1px}
-.admin-actions{display:flex;gap:.35rem}
-
-/* ── SETTINGS ── */
-.settings-section{display:flex;flex-direction:column;gap:.45rem}
-.settings-label{font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;padding:0 .2rem}
-.settings-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-.settings-row{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.85rem 1rem;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;min-height:54px}
-.settings-row:last-child{border-bottom:none}
-.settings-row:active{background:rgba(124,92,252,.05)}
-.settings-row-left{display:flex;align-items:center;gap:.65rem;min-width:0}
-.settings-row-icon{width:32px;height:32px;background:var(--surface);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
-.settings-row-name{font-size:.8rem;font-weight:500}
-.settings-row-sub{font-size:.63rem;color:var(--muted);font-family:var(--mono);margin-top:1px}
-.settings-chevron{color:var(--muted);font-size:.8rem;flex-shrink:0}
-
-/* ── FIREBASE CONFIG ── */
-.firebase-config{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-.firebase-header{background:rgba(124,92,252,.08);border-bottom:1px solid var(--border);padding:.75rem 1rem;display:flex;align-items:center;gap:.6rem}
-.firebase-header span{font-size:.75rem;font-weight:600;color:var(--accent);font-family:var(--mono)}
-.fb-dot{width:7px;height:7px;border-radius:50%;background:var(--danger);flex-shrink:0}
-.fb-dot.on{background:var(--success);box-shadow:0 0 6px var(--success)}
-.firebase-body{padding:1rem;display:flex;flex-direction:column;gap:.75rem}
-.firebase-note{font-size:.66rem;color:var(--muted);font-family:var(--mono);background:var(--void);border:1px solid var(--border);border-radius:6px;padding:.65rem .8rem;line-height:1.55}
-.firebase-note code{color:var(--accent);font-size:.64rem}
+/* ── BADGE ── */
+.badge{display:inline-flex;align-items:center;gap:.3rem;padding:3px 8px;border-radius:100px;font-size:.58rem;font-family:var(--mono);font-weight:600;text-transform:uppercase;letter-spacing:.07em;white-space:nowrap}
+.badge-on{background:rgba(92,252,154,.1);color:var(--success);border:1px solid rgba(92,252,154,.25)}
+.badge-off{background:rgba(252,92,124,.1);color:var(--danger);border:1px solid rgba(252,92,124,.25)}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.badge-new{background:rgba(124,92,252,.15);color:var(--accent);border:1px solid rgba(124,92,252,.3)}
 
 /* ── MODAL ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center;z-index:500;padding-bottom:env(safe-area-inset-bottom,0)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(5px);display:none;align-items:flex-end;justify-content:center;z-index:600;padding-bottom:env(safe-area-inset-bottom,0)}
+@media(min-width:600px){.modal-overlay{align-items:center}}
 .modal-overlay.open{display:flex}
-.modal{background:var(--panel);border:1px solid var(--border-lit);border-radius:var(--r-lg) var(--r-lg) 0 0;padding:1.5rem 1.25rem 1.75rem;width:100%;max-width:500px;display:flex;flex-direction:column;gap:1rem;animation:slideUp .22s ease}
+.modal{background:var(--panel);border:1px solid var(--border-lit);border-radius:var(--r-lg) var(--r-lg) 0 0;padding:1.5rem 1.25rem 1.75rem;width:100%;max-width:480px;display:flex;flex-direction:column;gap:1rem;animation:slideUp .22s ease}
+@media(min-width:600px){.modal{border-radius:var(--r-lg);padding:1.5rem}}
 @keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
-.modal::before{content:'';display:block;width:36px;height:4px;background:var(--border-lit);border-radius:2px;margin:0 auto -.25rem}
-.modal h2{font-size:.95rem}.modal p{font-size:.78rem;color:var(--muted);line-height:1.5}
-.modal-actions{display:flex;gap:.6rem}.modal-actions .btn{flex:1}
+.modal::before{content:'';display:block;width:40px;height:4px;background:var(--border-lit);border-radius:2px;margin:0 auto -.25rem;cursor:grab;flex-shrink:0}
+@media(min-width:600px){.modal::before{display:none}}
+.modal-title{font-size:1rem;font-weight:700}
+.modal-sub{font-size:.72rem;color:var(--muted);line-height:1.5;font-family:var(--mono)}
+.modal-actions{display:flex;gap:.6rem;margin-top:.25rem}
+.modal-actions .btn{flex:1}
+.modal-divider{border:none;border-top:1px solid var(--border);margin:.25rem 0}
 
 /* ── EMPTY ── */
-.empty{text-align:center;padding:2rem 1rem;color:var(--muted);font-family:var(--mono);font-size:.72rem;line-height:1.6}
-.empty-icon{font-size:1.8rem;margin-bottom:.4rem;opacity:.35;display:block}
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-family:var(--mono);font-size:.72rem;line-height:1.7}
+.empty-icon{font-size:2rem;margin-bottom:.5rem;opacity:.3;display:block}
 
 /* ── TOAST ── */
-#toast-container{position:fixed;bottom:calc(var(--bnav) + .6rem);left:.75rem;right:.75rem;display:flex;flex-direction:column;gap:.45rem;z-index:9000;pointer-events:none}
-.toast{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:.7rem 1rem;font-size:.75rem;font-family:var(--mono);box-shadow:0 8px 28px rgba(0,0,0,.5);animation:toastIn .22s ease}
+#toast-container{position:fixed;bottom:1rem;right:1rem;display:flex;flex-direction:column;gap:.45rem;z-index:9000;pointer-events:none;max-width:320px}
+.toast{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:.7rem 1rem;font-size:.74rem;font-family:var(--mono);box-shadow:0 8px 28px rgba(0,0,0,.55);animation:toastIn .22s ease}
 .toast.success{border-left-color:var(--success)}.toast.danger{border-left-color:var(--danger)}.toast.warn{border-left-color:var(--warn)}
-@keyframes toastIn{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes toastIn{from{transform:translateX(20px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* ── COPY FIELD ── */
+.copy-row{display:flex;align-items:center;gap:.35rem}
+.copy-row input{flex:1;font-size:.75rem}
+.copy-btn{min-width:38px;width:38px;height:38px;min-height:38px;border-radius:6px;padding:0;font-size:.7rem}
+
+/* ── ACTIVITY LOG ── */
+.log-list{display:flex;flex-direction:column;gap:0}
+.log-item{display:flex;align-items:flex-start;gap:.75rem;padding:.7rem 0;border-bottom:1px solid var(--border)}
+.log-item:last-child{border-bottom:none}
+.log-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:.25rem}
+.log-dot.create{background:var(--success)}.log-dot.edit{background:var(--accent)}.log-dot.delete{background:var(--danger)}.log-dot.toggle{background:var(--warn)}
+.log-text{font-family:var(--mono);font-size:.68rem;line-height:1.5;flex:1;color:var(--text)}
+.log-time{font-family:var(--mono);font-size:.6rem;color:var(--muted);white-space:nowrap;flex-shrink:0}
 
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:var(--void)}::-webkit-scrollbar-thumb{background:var(--border-lit);border-radius:2px}
 
-/* ── DESKTOP ── */
-@media(min-width:768px){
-  body{padding-bottom:0}
-  .bottom-nav{display:none}
-  .desktop-wrap{display:grid!important;grid-template-columns:210px 1fr}
-  aside{display:flex!important;flex-direction:column;gap:.2rem;background:var(--surface);border-right:1px solid var(--border);padding:1.25rem 0;position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));overflow-y:auto}
-  .aside-section{font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;color:var(--muted);padding:.5rem 1.25rem;margin-top:.3rem;text-transform:uppercase}
-  .aside-item{display:flex;align-items:center;gap:.6rem;padding:.52rem 1.25rem;cursor:pointer;font-size:.8rem;color:var(--muted);transition:all .15s;border-left:2px solid transparent;border-top:none;border-right:none;border-bottom:none;background:transparent;width:100%;text-align:left;font-family:var(--sans)}
-  .aside-item:hover{color:var(--text);background:rgba(124,92,252,.05)}
-  .aside-item.active{color:var(--accent);background:rgba(124,92,252,.1);border-left-color:var(--accent)}
-  .aside-icon{font-size:.82rem;width:18px;text-align:center}
-  .main-wrap{padding:1.5rem;display:flex;flex-direction:column;gap:1.25rem}
-  .stats{grid-template-columns:repeat(4,1fr);gap:.85rem}
-  .tab-bar{display:none!important}
-  .tab-content{display:flex!important}
-  .gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-  .user-list{display:none!important}
-  .dt-card{display:block!important}
-  table{width:100%;border-collapse:collapse;font-size:.78rem}
-  thead tr{border-bottom:1px solid var(--border)}
-  th{padding:.65rem 1rem;text-align:left;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:400}
-  tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
-  tbody tr:hover{background:rgba(124,92,252,.04)}
-  tbody tr:last-child{border-bottom:none}
-  td{padding:.75rem 1rem;vertical-align:middle}
-  .td-user{font-family:var(--mono);font-weight:600;color:var(--accent);font-size:.8rem}
-  .td-id{font-family:var(--mono);color:var(--muted);font-size:.66rem}
-  .row-actions{display:flex;gap:.35rem}
+/* ── QUICK CREDS ── */
+.cred-export-box{background:var(--void);border:1px solid var(--border);border-radius:8px;padding:.75rem .9rem;font-family:var(--mono);font-size:.7rem;line-height:1.8;white-space:pre-wrap;color:var(--text);max-height:260px;overflow-y:auto;user-select:text}
+.cred-export-box span.hi{color:var(--accent)}
+.cred-export-box span.ok{color:var(--success)}
+.cred-export-box span.dim{color:var(--muted)}
+
+/* ════════════════════════════════════════
+   ANDROID MOBILE OPTIMIZATIONS
+════════════════════════════════════════ */
+
+/* Safe area + gesture bar */
+:root{
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top:    env(safe-area-inset-top, 0px);
+  --nav-bottom-h: calc(64px + var(--safe-bottom));
 }
+
+/* Prevent iOS/Android input zoom (font-size must be >=16px on inputs) */
+@media(max-width:767px){
+  input[type="text"],
+  input[type="number"],
+  input[type="password"],
+  select,textarea{
+    font-size:16px!important;
+    -webkit-text-size-adjust:100%;
+  }
+  /* Larger touch targets for all interactive elements */
+  .btn-xs{
+    min-height:40px!important;
+    padding:.35rem .65rem!important;
+    font-size:.7rem!important;
+    border-radius:7px!important;
+  }
+  .btn-sm{min-height:40px!important}
+  .filter-chip{min-height:36px!important;padding:6px 14px!important;font-size:.65rem!important}
+  /* Filter bar: horizontal scroll instead of wrap */
+  .filter-bar{flex-wrap:nowrap!important;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+  .filter-bar::-webkit-scrollbar{display:none}
+  /* Card body padding tighter on small screens */
+  .card-body{padding:.75rem!important}
+  .card-header{padding:.75rem!important}
+  /* Page gap tighter */
+  .page{gap:.9rem!important}
+  /* H1 smaller on phone */
+  .page-title h1{font-size:1.1rem!important}
+  /* Stats: always 2×2 */
+  .stats-row{grid-template-columns:1fr 1fr!important;gap:.5rem!important}
+  .stat-card{padding:.75rem!important}
+  .stat-value{font-size:1.35rem!important}
+  /* Slot grid: 5 cols, smaller on narrow */
+  .slot-grid{grid-template-columns:repeat(5,1fr)!important;gap:.3rem!important}
+  /* Hide desktop table on mobile — use cards only */
+  #v-table-card{display:none!important}
+  /* Main padding: account for bottom nav + Android gesture bar */
+  .main{
+    padding:.85rem!important;
+    padding-bottom:calc(var(--nav-bottom-h) + 1.5rem)!important;
+    overflow-x:hidden!important;
+    overflow-y:visible!important;
+  }
+  /* Mobile nav: safe area aware, bigger tap targets */
+  .mobile-nav{
+    padding:.5rem .5rem calc(.5rem + var(--safe-bottom))!important;
+    gap:.3rem!important;
+  }
+  .mnav-btn{
+    min-width:52px!important;
+    padding:.45rem .4rem!important;
+    min-height:48px!important;
+    border-radius:10px!important;
+    font-size:.5rem!important;
+    flex:1!important;
+    max-width:72px!important;
+  }
+  .mnav-icon{font-size:1.1rem!important}
+  /* Toast: above mobile nav */
+  #toast-container{
+    bottom:calc(var(--nav-bottom-h) + .5rem)!important;
+    right:.75rem!important;
+    left:.75rem!important;
+    max-width:100%!important;
+  }
+  .toast{font-size:.7rem!important}
+  /* Modals: max height + internal scroll */
+  .modal{
+    max-height:88dvh!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    border-radius:18px 18px 0 0!important;
+    padding:1rem 1rem calc(1rem + var(--safe-bottom))!important;
+  }
+  /* Header: tighter on mobile */
+  header{height:52px!important;padding:0 .85rem!important}
+  .logo-sub{display:none}
+  /* Vendor cards: tighter */
+  .vc{padding:.75rem!important}
+  .vc-actions{flex-wrap:nowrap!important;gap:.3rem!important}
+  .vc-actions .btn{font-size:.62rem!important;padding:.35rem .4rem!important;flex:1!important}
+  /* Login box: full-safe padding */
+  #login-screen{padding:1rem!important;padding-top:calc(1rem + var(--safe-top))!important}
+  .login-box{border-radius:14px!important}
+  /* Copy rows: tighter */
+  .copy-row input{font-size:15px!important}
+  .copy-btn{min-width:42px!important;width:42px!important;height:42px!important;min-height:42px!important}
+  /* Search input */
+  .search-wrap input{font-size:16px!important}
+  /* Limit banner: compact */
+  .limit-banner{padding:.85rem!important;gap:.65rem!important}
+  .limit-banner-icon{font-size:1.1rem!important}
+  /* Form grid always 1 col */
+  .form-grid{grid-template-columns:1fr!important}
+  /* Export box smaller max-height */
+  .cred-export-box{max-height:none!important;font-size:.65rem!important;overflow-y:visible!important}
+  /* Capacity bar slots: tighter text */
+  .slot{font-size:.5rem!important}
+  /* Log items */
+  .log-time{font-size:.55rem!important}
+  .log-text{font-size:.65rem!important}
+  /* Page header wrap better */
+  .page-header{gap:.5rem!important}
+  /* Firebase note smaller */
+  .firebase-note{font-size:.58rem!important;padding:.55rem .7rem!important}
+  /* Color picker dots bigger for touch */
+  #color-picker > div,
+  #e-color-picker > div{
+    width:32px!important;
+    height:32px!important;
+  }
+  /* Preview box compact */
+  .capacity-bar-wrap{padding:.75rem!important}
+  /* Momentum scroll on main */
+  main{-webkit-overflow-scrolling:touch}
+}
+
+/* Very small phones (<380px) */
+@media(max-width:380px){
+  .mnav-btn{min-width:44px!important;max-width:60px!important;font-size:.45rem!important}
+  .stat-value{font-size:1.2rem!important}
+  .slot-grid{gap:.2rem!important}
+  .vc-actions .btn{padding:.3rem .25rem!important;font-size:.58rem!important}
+}
+
+/* Reduce motion for low-end Android */
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+
+/* Active states for Android touch (no hover) */
+@media(hover:none){
+  .btn:active{opacity:.75;transform:scale(.96)}
+  .sidebar-item:active{background:rgba(124,92,252,.12)!important}
+  .mnav-btn:active{border-color:var(--accent)!important;background:rgba(124,92,252,.15)!important}
+  .filter-chip:active{border-color:var(--accent)!important;background:rgba(124,92,252,.1)!important}
+  .slot:active{opacity:.7}
+}
+
+/* ── CAPACITY BAR ── */
+.capacity-bar-wrap{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);padding:.9rem 1rem;display:flex;flex-direction:column;gap:.55rem}
+.capacity-top{display:flex;align-items:center;justify-content:space-between}
+.capacity-label{font-family:var(--mono);font-size:.65rem;color:var(--muted);letter-spacing:.06em}
+.capacity-count{font-family:var(--mono);font-size:.75rem;font-weight:600}
+.capacity-track{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.capacity-fill{height:100%;border-radius:3px;transition:width .4s ease,background .4s ease}
+.capacity-fill.low{background:var(--success)}.capacity-fill.mid{background:var(--accent)}.capacity-fill.high{background:var(--warn)}.capacity-fill.full{background:var(--danger)}
+.limit-banner{background:rgba(252,92,124,.07);border:1px solid rgba(252,92,124,.3);border-radius:var(--r);padding:1.1rem 1.2rem;display:flex;align-items:flex-start;gap:.9rem}
+.limit-banner-icon{font-size:1.4rem;line-height:1;flex-shrink:0;margin-top:.05rem}
+.limit-banner-body{flex:1;min-width:0}
+.limit-banner-title{font-size:.88rem;font-weight:700;color:var(--danger);margin-bottom:.25rem}
+.limit-banner-desc{font-family:var(--mono);font-size:.65rem;color:var(--muted);line-height:1.6}
+.limit-banner-desc span{color:var(--text)}
+.firebase-note{background:rgba(124,92,252,.06);border:1px solid rgba(124,92,252,.2);border-radius:8px;padding:.7rem .9rem;font-family:var(--mono);font-size:.62rem;color:var(--muted);line-height:1.6;display:flex;align-items:flex-start;gap:.55rem}
+.firebase-note-icon{color:var(--accent);flex-shrink:0;margin-top:.05rem}
+.create-locked{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:2.5rem 1.5rem;text-align:center}
+.create-locked-icon{font-size:2.8rem;opacity:.6}
+.create-locked-title{font-size:1rem;font-weight:700;color:var(--danger)}
+.create-locked-desc{font-family:var(--mono);font-size:.68rem;color:var(--muted);line-height:1.7;max-width:320px}
+.create-locked-actions{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;margin-top:.5rem}
+.slot-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem}
+.slot{aspect-ratio:1;border-radius:6px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.55rem;color:var(--muted);transition:all .2s;position:relative;overflow:hidden;cursor:default}
+.slot.used-active{border-color:rgba(92,252,154,.35);background:rgba(92,252,154,.06)}
+.slot.used-inactive{border-color:rgba(252,92,124,.25);background:rgba(252,92,124,.04)}
+.slot.empty{border-style:dashed}
+.slot.full-slot{border-color:rgba(252,92,124,.4);background:rgba(252,92,124,.06)}
 </style>
-<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
 <body>
 
-<!-- ════════════════════════════════
-     LOGIN SCREEN
-════════════════════════════════ -->
+<!-- ════════ LOGIN ════════ -->
 <div id="login-screen">
-  <div class="login-logo">
-    <div class="login-dot"></div>
-    SHADOW·CHAMS
-  </div>
+  <div class="login-logo"><div class="login-dot"></div>SHADOW·CHAMS</div>
   <div class="login-box">
     <div class="login-header">
-      <h2>Iniciar Sesión</h2>
-      <p>Ingresa con tu cuenta de reseller</p>
+      <h2>Vendor Manager</h2>
+      <p>Acceso restringido — solo super admin</p>
     </div>
     <div class="login-body">
-      <div class="login-error" id="login-error">Usuario o contraseña incorrectos</div>
+      <div class="login-error" id="login-error">Credenciales incorrectas</div>
       <div class="field">
         <label>Usuario</label>
-        <input type="text" id="login-user" placeholder="tu_usuario" autocomplete="username">
+        <input type="text" id="login-user" placeholder="admin" autocomplete="username">
       </div>
       <div class="field">
         <label>Contraseña</label>
@@ -293,467 +409,427 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       </div>
       <button class="btn btn-primary btn-full" onclick="doLogin()">Entrar →</button>
     </div>
-    <div class="login-footer">SHADOW CHAMS — RESELLER PANEL v2.2</div>
+    <div class="login-footer">VENDOR MANAGER v1.0 — SUPER ADMIN ONLY</div>
   </div>
 </div>
 
-<!-- ════════════════════════════════
-     HEADER
-════════════════════════════════ -->
-<header id="main-header" style="display:none">
-  <div class="logo"><div class="logo-dot"></div>SHADOW·CHAMS</div>
-  <div class="header-right">
-    <button class="user-chip" onclick="showPage('perfil')" id="header-chip">
-      <div class="user-avatar" id="header-avatar">?</div>
-      <span id="header-name">—</span>
+<!-- ════════ APP ════════ -->
+<div id="app" style="display:none">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <div class="logo-dot"></div>
+      SHADOW·CHAMS
+      <span class="logo-sub">VENDOR MGR</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:.6rem">
+      <span style="font-family:var(--mono);font-size:.62rem;color:var(--warn);background:rgba(252,192,92,.1);border:1px solid rgba(252,192,92,.25);padding:2px 9px;border-radius:100px">SUPER ADMIN</span>
+      <button class="btn btn-ghost btn-sm" onclick="doLogout()">⊗ Salir</button>
+    </div>
+  </header>
+
+  <div class="app-wrap">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-section">Gestión</div>
+      <button class="sidebar-item active" onclick="showPage('vendors')" id="sb-vendors">
+        <span class="sidebar-icon">👥</span>Vendedores
+        <span class="sidebar-badge" id="sb-badge-total">0</span>
+      </button>
+      <button class="sidebar-item" onclick="showPage('create')" id="sb-create">
+        <span class="sidebar-icon">⊞</span>Crear Vendedor
+      </button>
+      <button class="sidebar-item" onclick="showPage('export')" id="sb-export">
+        <span class="sidebar-icon">📋</span>Exportar Credenciales
+      </button>
+      <div class="sidebar-section">Sistema</div>
+      <button class="sidebar-item" onclick="showPage('activity')" id="sb-activity">
+        <span class="sidebar-icon">◎</span>Actividad
+        <span class="sidebar-badge" id="sb-badge-log" style="background:rgba(252,92,124,.15);color:var(--danger);border-color:rgba(252,92,124,.3)">0</span>
+      </button>
+      <button class="sidebar-item" onclick="showPage('settings')" id="sb-settings">
+        <span class="sidebar-icon">⚙</span>Configuración
+      </button>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- ══ VENDORS ══ -->
+      <div class="page active" id="page-vendors">
+        <div class="page-header">
+          <div class="page-title">
+            <h1>Vendedores</h1>
+            <p id="vendors-sub">shadow-chams // gestión de cuentas reseller</p>
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-new-vendor" onclick="goToCreate()">⊞ Nuevo</button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-label">Total</div><div class="stat-value accent" id="st-total">0</div></div>
+          <div class="stat-card"><div class="stat-label">Activos</div><div class="stat-value success" id="st-active">0</div></div>
+          <div class="stat-card"><div class="stat-label">Inactivos</div><div class="stat-value danger" id="st-inactive">0</div></div>
+          <div class="stat-card"><div class="stat-label">Nuevos (7d)</div><div class="stat-value warn" id="st-new">0</div></div>
+        </div>
+
+        <!-- Capacity bar -->
+        <div class="capacity-bar-wrap">
+          <div class="capacity-top">
+            <span class="capacity-label">⬜ SLOTS DE VENDEDOR</span>
+            <span class="capacity-count" id="cap-count">0 / 15</span>
+          </div>
+          <div class="capacity-track"><div class="capacity-fill low" id="cap-fill" style="width:0%"></div></div>
+          <div id="cap-slot-grid" class="slot-grid"></div>
+          <div class="firebase-note">
+            <span class="firebase-note-icon">🔥</span>
+            Actualmente usando almacenamiento local. Cuando Firebase esté conectado, los vendedores se sincronizarán en la nube y el límite podrá ajustarse dinámicamente.
+          </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="card">
+          <div class="card-body" style="display:flex;flex-direction:column;gap:.65rem">
+            <div class="search-row">
+              <div class="search-wrap">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <input type="text" id="v-search" placeholder="Buscar por nombre o usuario..." oninput="renderVendors()">
+              </div>
+            </div>
+            <div class="filter-bar">
+              <button class="filter-chip active" data-vf="all" onclick="setVFilter(this,'all')">Todos</button>
+              <button class="filter-chip" data-vf="active" onclick="setVFilter(this,'active')">Activos</button>
+              <button class="filter-chip" data-vf="inactive" onclick="setVFilter(this,'inactive')">Inactivos</button>
+              <button class="filter-chip" data-vf="new" onclick="setVFilter(this,'new')">Nuevos (7d)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop table -->
+        <div class="card" id="v-table-card">
+          <div class="vendor-table-wrap">
+            <table class="vendor-table">
+              <thead>
+                <tr>
+                  <th class="vt-num">#</th>
+                  <th>Vendedor</th>
+                  <th>Usuario</th>
+                  <th>Contraseña</th>
+                  <th>Estado</th>
+                  <th>Keys</th>
+                  <th>Creado</th>
+                  <th style="text-align:right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="v-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Mobile cards -->
+        <div class="vendor-cards" id="v-cards"></div>
+      </div>
+
+      <!-- ══ CREATE ══ -->
+      <div class="page" id="page-create">
+        <div class="page-title">
+          <h1>Crear Vendedor</h1>
+          <p>shadow-chams // nueva cuenta reseller</p>
+        </div>
+
+        <!-- Límite alcanzado banner (hidden by default) -->
+        <div class="limit-banner" id="limit-banner" style="display:none">
+          <div class="limit-banner-icon">⛔</div>
+          <div class="limit-banner-body">
+            <div class="limit-banner-title">Límite de vendedores alcanzado</div>
+            <div class="limit-banner-desc">
+              Has alcanzado el máximo de <span>15 vendedores</span>. Para agregar uno nuevo, primero <span>elimina o desactiva</span> un vendedor existente.<br><br>
+              Cuando Firebase esté conectado, el límite se podrá gestionar desde el panel de administración de la nube.
+            </div>
+          </div>
+        </div>
+
+        <!-- Locked view (limit reached) -->
+        <div class="card" id="create-locked-card" style="display:none">
+          <div class="create-locked">
+            <div class="create-locked-icon">🔒</div>
+            <div class="create-locked-title">Capacidad máxima</div>
+            <div class="create-locked-desc">
+              Los 15 slots de vendedor están ocupados. Elimina o desactiva un vendedor para liberar espacio y poder crear uno nuevo.
+            </div>
+            <div class="create-locked-actions">
+              <button class="btn btn-ghost" onclick="showPage('vendors')">← Ver vendedores</button>
+              <button class="btn btn-warn" onclick="showPage('vendors'); setTimeout(()=>{ document.querySelector('.filter-chip[data-vf=inactive]')?.click(); },150)">Ver inactivos</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form (shown when under limit) -->
+        <div class="card" id="create-form-card">
+          <div class="card-header">
+            <span class="card-title">◎ Datos de la cuenta</span>
+            <span style="font-family:var(--mono);font-size:.6rem;color:var(--muted)" id="create-slots-left"></span>
+          </div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:.85rem">
+            <div class="form-grid">
+              <div class="field">
+                <label>Nombre completo</label>
+                <input type="text" id="c-name" placeholder="Ej: Carlos Ruiz">
+                <div class="field-hint">Se muestra en el panel del reseller</div>
+              </div>
+              <div class="field">
+                <label>Usuario (login)</label>
+                <input type="text" id="c-user" placeholder="Ej: carlos_r" oninput="sanitizeUser('c-user')">
+                <div class="field-hint">Solo letras, números y _ sin espacios</div>
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label>Contraseña</label>
+                <div class="copy-row">
+                  <input type="text" id="c-pass" placeholder="Escribe o genera">
+                  <button class="btn btn-ghost copy-btn" onclick="generatePass()" title="Generar">🎲</button>
+                </div>
+                <div class="field-hint">Mín. 6 caracteres</div>
+              </div>
+              <div class="field">
+                <label>Color de avatar</label>
+                <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:2px" id="color-picker"></div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.75rem;padding:.75rem .9rem;background:var(--void);border:1px solid var(--border);border-radius:8px;flex-wrap:wrap">
+              <div style="font-family:var(--mono);font-size:.65rem;color:var(--muted)">Vista previa:</div>
+              <div style="display:flex;align-items:center;gap:.6rem">
+                <div id="prev-avatar" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700">?</div>
+                <div>
+                  <div style="font-size:.82rem;font-weight:600" id="prev-name">Nombre Vendedor</div>
+                  <div style="font-family:var(--mono);font-size:.65rem;color:var(--muted)" id="prev-user">@usuario</div>
+                </div>
+              </div>
+            </div>
+            <div id="create-error" style="display:none;background:rgba(252,92,124,.1);border:1px solid rgba(252,92,124,.3);color:var(--danger);border-radius:7px;padding:.65rem .9rem;font-family:var(--mono);font-size:.72rem"></div>
+            <div style="display:flex;gap:.6rem">
+              <button class="btn btn-ghost" style="flex:1" onclick="showPage('vendors')">Cancelar</button>
+              <button class="btn btn-primary" style="flex:2" onclick="createVendor()">⊞ Crear Vendedor</button>
+            </div>
+          </div>
+        </div>
+        </div><!-- /create-form-card -->
+      </div>
+
+      <!-- ══ EXPORT ══ -->
+      <div class="page" id="page-export">
+        <div class="page-title">
+          <h1>Exportar Credenciales</h1>
+          <p>shadow-chams // copia y comparte accesos</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">📋 Todas las credenciales</span>
+            <button class="btn btn-ghost btn-sm" onclick="copyAllCreds()">Copiar todo</button>
+          </div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:.75rem">
+            <div style="font-family:var(--mono);font-size:.62rem;color:var(--muted);line-height:1.5">
+              Lista completa de usuarios y contraseñas de todos los vendedores activos.
+            </div>
+            <div class="cred-export-box" id="export-box" style="max-height:none;overflow-y:visible"></div>
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+              <button class="btn btn-primary btn-sm" onclick="copyAllCreds()">📋 Copiar lista</button>
+              <button class="btn btn-ghost btn-sm" onclick="downloadCreds()">⬇ Descargar .txt</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Búsqueda individual -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">🔍 Buscar vendedor individual</span>
+          </div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:.75rem">
+            <div class="search-wrap">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input type="text" id="exp-search" placeholder="Nombre o usuario..." oninput="renderExportSearch()">
+            </div>
+            <div id="exp-results"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ ACTIVITY ══ -->
+      <div class="page" id="page-activity">
+        <div class="page-header">
+          <div class="page-title">
+            <h1>Actividad</h1>
+            <p>shadow-chams // registro de cambios</p>
+          </div>
+          <button class="btn btn-danger btn-sm" onclick="clearLog()">⊗ Limpiar</button>
+        </div>
+        <div class="card" style="overflow:visible">
+          <div class="card-header">
+            <span class="card-title">◎ Historial de acciones</span>
+            <span style="font-family:var(--mono);font-size:.62rem;color:var(--muted)" id="log-count-label">0 entradas</span>
+          </div>
+          <div class="card-body" style="padding:.5rem 1rem;overflow:visible;height:auto">
+            <div class="log-list" id="log-list" style="overflow:visible"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ SETTINGS ══ -->
+      <div class="page" id="page-settings">
+        <div class="page-title">
+          <h1>Configuración</h1>
+          <p>shadow-chams // opciones del sistema</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">🔑 Cambiar contraseña super admin</span>
+          </div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:.75rem">
+            <div class="field">
+              <label>Contraseña actual</label>
+              <input type="password" id="sa-curr" placeholder="••••••••">
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label>Nueva contraseña</label>
+                <input type="password" id="sa-new" placeholder="••••••••">
+              </div>
+              <div class="field">
+                <label>Confirmar</label>
+                <input type="password" id="sa-conf" placeholder="••••••••">
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="changeSuperPass()">Actualizar contraseña</button>
+          </div>
+        </div>
+
+        <div class="card" style="border-color:rgba(252,92,124,.3)">
+          <div class="card-header" style="background:rgba(252,92,124,.05)">
+            <span class="card-title" style="color:var(--danger)">⚠ Zona de peligro</span>
+          </div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:.75rem">
+            <div style="font-family:var(--mono);font-size:.65rem;color:var(--muted);line-height:1.6">
+              Estas acciones eliminan datos de forma permanente. No se pueden deshacer.
+            </div>
+            <button class="btn btn-danger" onclick="confirmResetAllVendors()">⊗ Resetear todos los vendedores a defaults</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- MOBILE NAV -->
+  <div class="mobile-nav">
+    <button class="mnav-btn active" id="mn-vendors" onclick="showPage('vendors')">
+      <span class="mnav-icon">👥</span>Vendedores
     </button>
-    <span class="role-badge role-admin" id="header-role">RESELLER</span>
+    <button class="mnav-btn" id="mn-create" onclick="showPage('create')">
+      <span class="mnav-icon">⊞</span>Crear
+    </button>
+    <button class="mnav-btn" id="mn-export" onclick="showPage('export')">
+      <span class="mnav-icon">📋</span>Exportar
+    </button>
+    <button class="mnav-btn" id="mn-activity" onclick="showPage('activity')">
+      <span class="mnav-icon">◎</span>Actividad
+    </button>
+    <button class="mnav-btn" id="mn-settings" onclick="showPage('settings')">
+      <span class="mnav-icon">⚙</span>Config
+    </button>
   </div>
-</header>
 
-<!-- ════════════════════════════════
-     DESKTOP WRAP
-════════════════════════════════ -->
-<div class="desktop-wrap" id="app" style="display:none">
+</div>
 
-  <!-- SIDEBAR -->
-  <aside style="display:none" id="sidebar">
-    <div class="aside-section">Panel</div>
-    <button class="aside-item active" onclick="showPage('dashboard')"><span class="aside-icon">◈</span>Dashboard</button>
-    <button class="aside-item" onclick="showPage('mis-keys')"><span class="aside-icon">◎</span>Mis Keys</button>
-    <button class="aside-item" onclick="showPage('generar')"><span class="aside-icon">⊞</span>Generar</button>
-    <button class="aside-item" onclick="showPage('ranking')"><span class="aside-icon">▲</span>Ranking</button>
-    <div class="aside-section" id="sb-super-section" style="display:none">Super Admin</div>
-    <button class="aside-item" id="sb-admins" style="display:none" onclick="showPage('admins')"><span class="aside-icon">👥</span>Admins</button>
-    <button class="aside-item" id="sb-all-keys" style="display:none" onclick="showPage('todas-keys')"><span class="aside-icon">🗂</span>Todas las Keys</button>
-    <div class="aside-section">Cuenta</div>
-    <button class="aside-item" onclick="showPage('perfil')"><span class="aside-icon">◇</span>Mi Perfil</button>
-    <button class="aside-item" onclick="doLogout()" style="color:var(--danger)"><span class="aside-icon">⊗</span>Salir</button>
-  </aside>
+<!-- ════════ MODALS ════════ -->
 
-  <!-- MAIN -->
-  <div class="main-wrap" id="main-wrap">
-
-    <!-- ══ PÁGINA: DASHBOARD ══ -->
-    <div class="page active" id="page-dashboard">
-      <div class="page-title">
-        <h1 id="dash-greeting">Bienvenido</h1>
-        <p id="dash-sub">shadow-chams // resumen de tu actividad</p>
-      </div>
-      <div class="stats">
-        <div class="stat-card"><div class="stat-label">Mis Keys</div><div class="stat-value accent" id="my-total">0</div></div>
-        <div class="stat-card"><div class="stat-label">Activas</div><div class="stat-value success" id="my-active">0</div></div>
-        <div class="stat-card"><div class="stat-label">Vencidas</div><div class="stat-value danger" id="my-expired">0</div></div>
-        <div class="stat-card"><div class="stat-label">Hoy</div><div class="stat-value warn" id="my-today">0</div></div>
-      </div>
-
-      <!-- Mi actividad reciente -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><span style="color:var(--accent)">◎</span>Mis últimas keys</div>
-          <button class="btn btn-ghost btn-sm" onclick="showPage('mis-keys')">Ver todas →</button>
-        </div>
-        <div class="card-body" id="dash-recent"></div>
-      </div>
-
-      <!-- Mini ranking en dashboard -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><span style="color:var(--warn)">▲</span>Top Vendedores</div>
-          <button class="btn btn-ghost btn-sm" onclick="showPage('ranking')">Completo →</button>
-        </div>
-        <div class="card-body" id="dash-rank-mini"></div>
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
-        <button class="btn btn-primary" onclick="showPage('generar')">⊞ Generar Key</button>
-        <button class="btn btn-ghost" onclick="showPage('ranking')">▲ Ranking</button>
-      </div>
-    </div>
-
-    <!-- ══ PÁGINA: MIS KEYS ══ -->
-    <div class="page" id="page-mis-keys">
-      <div class="page-title">
-        <h1>Mis Keys</h1>
-        <p id="mis-keys-sub">shadow-chams // tus licencias generadas</p>
-      </div>
-
-      <!-- Card: añadir tiempo masivo a MIS keys -->
-      <div class="card" style="border-color:rgba(92,252,154,.25)" id="my-bulk-time-card">
-        <div class="card-header" style="background:rgba(92,252,154,.05)">
-          <span class="card-title">⊕ Añadir Tiempo a Todas Mis Keys</span>
-          <span style="font-family:var(--mono);font-size:.58rem;color:var(--success);background:rgba(92,252,154,.1);border:1px solid rgba(92,252,154,.25);padding:2px 8px;border-radius:100px">bulk</span>
-        </div>
-        <div class="card-body" style="display:flex;flex-direction:column;gap:.75rem">
-          <div style="font-family:var(--mono);font-size:.64rem;color:var(--muted);line-height:1.55;background:var(--void);border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem">
-            Se suma al tiempo restante de todas tus keys.<br>
-            <span style="color:var(--text)">Ej: 2d + 1d = 3d · 3d + 1d = 4d</span>
-          </div>
-          <div class="duration-row">
-            <div class="field"><label>Días</label><input type="number" id="my-bulk-days" value="0" min="0" max="365"></div>
-            <div class="field"><label>Horas</label><input type="number" id="my-bulk-hours" value="0" min="0" max="23"></div>
-            <div class="field"><label>Min</label><input type="number" id="my-bulk-mins" value="0" min="0" max="59"></div>
-          </div>
-          <button class="btn btn-success btn-full" onclick="addTimeMyBulk()">⊕ Aplicar a Todas Mis Keys</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-body" style="display:flex;flex-direction:column;gap:.7rem">
-          <div class="search-row">
-            <div class="search-wrap">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-              <input type="text" id="my-search" placeholder="Buscar key..." oninput="renderMyKeys()">
-            </div>
-          </div>
-          <div class="filter-bar">
-            <button class="filter-chip active" data-filter="all" onclick="setFilter(this,'my')">Todas</button>
-            <button class="filter-chip" data-filter="active" onclick="setFilter(this,'my')">Activas</button>
-            <button class="filter-chip" data-filter="expired" onclick="setFilter(this,'my')">Vencidas</button>
-          </div>
-        </div>
-      </div>
-      <div style="display:flex;gap:.5rem">
-        <button class="btn btn-ghost btn-sm" style="flex:1" onclick="confirmMyResetAll()">↻ Reset mis keys</button>
-        <button class="btn btn-danger btn-sm" style="flex:1" onclick="confirmMyDeleteAll()">⊗ Borrar mis keys</button>
-      </div>
-      <div class="user-list" id="my-key-cards"></div>
-      <div class="card dt-card" style="display:none" id="my-dt-card">
-        <div style="overflow-x:auto">
-          <table><thead><tr><th>#</th><th>Key</th><th>Tipo</th><th>Tiempo</th><th>Expiración</th><th>Acciones</th></tr></thead>
-          <tbody id="my-dt-tbody"></tbody></table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ PÁGINA: GENERAR ══ -->
-    <div class="page" id="page-generar">
-      <div class="page-title">
-        <h1>Generar Keys</h1>
-        <p id="gen-page-sub">shadow-chams // crear nuevas licencias</p>
-      </div>
-      <div class="tab-bar" id="gen-tab-bar">
-        <button class="tab-btn active" id="tab-btn-quick" onclick="switchTab(this,'tab-quick')">⚡ Rápida</button>
-        <button class="tab-btn" id="tab-btn-custom" onclick="switchTab(this,'tab-custom')">⚙ Personalizada</button>
-      </div>
-      <div class="gen-grid">
-        <div class="gen-panel tab-content active" id="tab-quick">
-          <h3>Generación Rápida</h3>
-          <div class="field">
-            <label>Tipo de Licencia</label>
-            <select id="quick-type" onchange="updateQuickPreview()">
-              <option value="15">15 Días</option>
-              <option value="30">30 Días</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Cantidad</label>
-            <input type="number" id="quick-qty" value="1" min="1" max="50">
-          </div>
-          <div class="field">
-            <label>Vista previa</label>
-            <div class="preview-box">
-              <span class="preview-user" id="preview-user">Shadow-——————</span>
-              <span class="preview-expire" id="preview-expire">15d</span>
-            </div>
-          </div>
-          <button class="btn btn-primary btn-full" onclick="quickGenerate()">⊞ Generar Ahora</button>
-        </div>
-        <div class="gen-panel tab-content" id="tab-custom">
-          <!-- Contenido dinámico: si es super admin muestra el form, si no un aviso -->
-          <div id="custom-form-wrap"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ PÁGINA: RANKING ══ -->
-    <div class="page" id="page-ranking">
-      <div class="page-title">
-        <h1>Ranking</h1>
-        <p>shadow-chams // tabla de vendedores</p>
-      </div>
-
-      <!-- Mini stats globales -->
-      <div class="stats">
-        <div class="stat-card"><div class="stat-label">Keys Totales</div><div class="stat-value accent" id="rank-total">0</div></div>
-        <div class="stat-card"><div class="stat-label">Activas</div><div class="stat-value success" id="rank-active">0</div></div>
-        <div class="stat-card"><div class="stat-label">Vencidas</div><div class="stat-value danger" id="rank-expired">0</div></div>
-        <div class="stat-card"><div class="stat-label">Vendedores</div><div class="stat-value warn" id="rank-sellers">0</div></div>
-      </div>
-
-      <!-- Filter por periodo -->
-      <div class="filter-bar">
-        <button class="filter-chip active" data-rfilter="all" onclick="setRankFilter(this,'all')">Total</button>
-        <button class="filter-chip" data-rfilter="today" onclick="setRankFilter(this,'today')">Hoy</button>
-        <button class="filter-chip" data-rfilter="week" onclick="setRankFilter(this,'week')">Semana</button>
-        <button class="filter-chip" data-rfilter="month" onclick="setRankFilter(this,'month')">Mes</button>
-      </div>
-
-      <div class="leaderboard" id="leaderboard"></div>
-
-      <!-- Tabla detallada de todos los vendedores -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">📊 Tabla de Vendedores</span>
-          <span style="font-family:var(--mono);font-size:.6rem;color:var(--muted)" id="sellers-table-sub">15 vendedores</span>
-        </div>
-        <div class="card-body" style="padding:0;overflow-x:auto">
-          <table class="sellers-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Vendedor</th>
-                <th>Usuario</th>
-                <th>Total Keys</th>
-                <th>Activas</th>
-                <th>Vencidas</th>
-                <th>Hoy</th>
-              </tr>
-            </thead>
-            <tbody id="sellers-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ PÁGINA: TODAS LAS KEYS (super admin) ══ -->
-    <div class="page" id="page-todas-keys">
-      <div class="page-title">
-        <h1>Todas las Keys</h1>
-        <p>shadow-chams // vista global de admin</p>
-      </div>
-
-      <!-- Card: añadir tiempo masivo -->
-      <div class="card" style="border-color:rgba(252,192,92,.35)">
-        <div class="card-header" style="background:rgba(252,192,92,.06)">
-          <span class="card-title">⊕ Añadir Tiempo Masivo</span>
-          <span style="font-family:var(--mono);font-size:.58rem;color:var(--warn);background:rgba(252,192,92,.12);border:1px solid rgba(252,192,92,.3);padding:2px 8px;border-radius:100px">super admin</span>
-        </div>
-        <div class="card-body" style="display:flex;flex-direction:column;gap:.75rem">
-          <div style="font-family:var(--mono);font-size:.64rem;color:var(--muted);line-height:1.55;background:var(--void);border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem">
-            Se suma al tiempo restante de cada key del destino.<br>
-            <span style="color:var(--text)">Ej: 2d + 1d = 3d · 3d + 1d = 4d</span>
-          </div>
-          <div class="field">
-            <label>Aplicar a</label>
-            <select id="bulk-target-seller">
-              <option value="all">🌐 Todos los vendedores</option>
-            </select>
-          </div>
-          <div class="duration-row">
-            <div class="field"><label>Días</label><input type="number" id="bulk-days" value="0" min="0" max="365"></div>
-            <div class="field"><label>Horas</label><input type="number" id="bulk-hours" value="0" min="0" max="23"></div>
-            <div class="field"><label>Min</label><input type="number" id="bulk-mins" value="0" min="0" max="59"></div>
-          </div>
-          <button class="btn btn-warn btn-full" onclick="addTimeBulk()">⊕ Aplicar Tiempo</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-body" style="display:flex;flex-direction:column;gap:.7rem">
-          <div class="search-row">
-            <div class="search-wrap">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-              <input type="text" id="all-search" placeholder="Buscar key o vendedor..." oninput="renderAllKeys()">
-            </div>
-          </div>
-          <div class="filter-bar">
-            <button class="filter-chip active" data-filter="all" onclick="setFilter(this,'all')">Todas</button>
-            <button class="filter-chip" data-filter="active" onclick="setFilter(this,'all')">Activas</button>
-            <button class="filter-chip" data-filter="expired" onclick="setFilter(this,'all')">Vencidas</button>
-          </div>
-        </div>
-      </div>
-      <div class="user-list" id="all-key-cards"></div>
-      <div class="card dt-card" style="display:none" id="all-dt-card">
-        <div style="overflow-x:auto">
-          <table><thead><tr><th>#</th><th>Key</th><th>Generada por</th><th>Tipo</th><th>Tiempo</th><th>Expiración</th><th>Acciones</th></tr></thead>
-          <tbody id="all-dt-tbody"></tbody></table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ PÁGINA: ADMINS (super admin) ══ -->
-    <div class="page" id="page-admins">
-      <div class="page-title">
-        <h1>Gestionar Admins</h1>
-        <p>shadow-chams // panel de cuentas</p>
-      </div>
-      <button class="btn btn-primary" onclick="openAddAdmin()">+ Agregar Admin</button>
-
-      <!-- Credenciales rápidas de los 15 vendedores -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">🔑 Credenciales de los 15 Vendedores</span>
-          <button class="btn btn-ghost btn-sm" onclick="copyCreds()">Copiar todo</button>
-        </div>
-        <div class="card-body">
-          <div class="section-label">Usuario / Contraseña / Keys generadas</div>
-          <div class="creds-grid" id="creds-grid"></div>
-        </div>
-      </div>
-
-      <div id="admin-list"></div>
-    </div>
-
-    <!-- ══ PÁGINA: PERFIL ══ -->
-    <div class="page" id="page-perfil">
-      <div class="page-title">
-        <h1>Mi Perfil</h1>
-        <p>shadow-chams // tu cuenta</p>
-      </div>
-      <div class="card">
-        <div class="card-body" style="display:flex;flex-direction:column;gap:1rem">
-          <div style="display:flex;align-items:center;gap:1rem">
-            <div id="perfil-avatar" style="width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;flex-shrink:0"></div>
-            <div>
-              <div style="font-size:1rem;font-weight:600" id="perfil-name">—</div>
-              <div style="font-family:var(--mono);font-size:.68rem;color:var(--muted)" id="perfil-user">—</div>
-              <div style="margin-top:4px" id="perfil-role-badge"></div>
-            </div>
-          </div>
-          <hr style="border:none;border-top:1px solid var(--border)">
-          <div class="field">
-            <label>Cambiar Contraseña</label>
-            <input type="password" id="new-pass" placeholder="Nueva contraseña...">
-          </div>
-          <div class="field">
-            <label>Confirmar Contraseña</label>
-            <input type="password" id="confirm-pass" placeholder="Repetir contraseña...">
-          </div>
-          <button class="btn btn-primary btn-full" onclick="changePassword()">Actualizar Contraseña</button>
-        </div>
-      </div>
-      <div class="settings-section">
-        <div class="settings-label">Sesión</div>
-        <div class="settings-card">
-          <div class="settings-row" onclick="doLogout()">
-            <div class="settings-row-left">
-              <div class="settings-row-icon">⊗</div>
-              <div><div class="settings-row-name" style="color:var(--danger)">Cerrar Sesión</div></div>
-            </div>
-            <span class="settings-chevron" style="color:var(--danger)">›</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Ajustes Firebase (solo super) -->
-      <div id="perfil-super-section" style="display:none">
-        <div class="settings-section" style="margin-top:.5rem">
-          <div class="settings-label">🔥 Firebase</div>
-          <div class="firebase-config">
-            <div class="firebase-header"><div class="fb-dot" id="fb-dot"></div><span id="fb-lbl">Sin conectar</span></div>
-            <div class="firebase-body">
-              <div class="firebase-note">
-                Pega tu config de Firebase SDK aquí.<br>
-                <code>Consola → Proyecto → Config → SDK</code>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:.55rem">
-                <div class="field"><label>API Key</label><input type="password" id="fb-apikey" placeholder="AIzaSy..."></div>
-                <div class="field"><label>Auth Domain</label><input type="text" id="fb-authdomain" placeholder="proyecto.firebaseapp.com"></div>
-                <div class="field"><label>Project ID</label><input type="text" id="fb-projectid" placeholder="mi-proyecto"></div>
-                <div class="field"><label>Database URL</label><input type="text" id="fb-dburl" placeholder="https://...firebaseio.com"></div>
-              </div>
-              <div style="display:flex;gap:.5rem">
-                <button class="btn btn-primary" style="flex:1" onclick="saveFirebaseConfig()">💾 Guardar</button>
-                <button class="btn btn-ghost btn-sm" onclick="testFirebase()">🔌 Probar</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /main-wrap -->
-</div><!-- /desktop-wrap -->
-
-<!-- ════════════════════════════════
-     BOTTOM NAV (móvil)
-════════════════════════════════ -->
-<nav class="bottom-nav" id="bottom-nav" style="display:none">
-  <button class="bn-item active" data-page="dashboard" onclick="showPage('dashboard')">
-    <span class="bn-icon">◈</span><span>Inicio</span>
-  </button>
-  <button class="bn-item" data-page="mis-keys" onclick="showPage('mis-keys')">
-    <span class="bn-icon">◎</span><span>Mis Keys</span>
-  </button>
-  <button class="bn-item" data-page="generar" onclick="showPage('generar')">
-    <span class="bn-icon-wrap"><span class="bn-icon">⊞</span></span><span>Generar</span>
-  </button>
-  <button class="bn-item" data-page="ranking" onclick="showPage('ranking')">
-    <span class="bn-icon">▲</span><span>Ranking</span>
-  </button>
-  <button class="bn-item" data-page="perfil" onclick="showPage('perfil')">
-    <span class="bn-icon">◇</span><span>Perfil</span>
-  </button>
-</nav>
-
-<!-- MODAL CONFIRMAR -->
-<div class="modal-overlay" id="modal-overlay">
+<!-- Confirmar genérico -->
+<div class="modal-overlay" id="modal-confirm">
   <div class="modal">
-    <h2 id="modal-title">Confirmar</h2>
-    <p id="modal-body">¿Estás seguro?</p>
+    <div class="modal-title" id="mc-title">Confirmar</div>
+    <div class="modal-sub" id="mc-body">¿Estás seguro?</div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-danger" onclick="modalConfirm()">Confirmar</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-confirm')">Cancelar</button>
+      <button class="btn btn-danger" id="mc-ok" onclick="">Confirmar</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL AGREGAR ADMIN -->
-<div class="modal-overlay" id="add-admin-modal">
+<!-- Editar vendedor -->
+<div class="modal-overlay" id="modal-edit">
   <div class="modal">
-    <h2>Agregar Admin</h2>
-    <div class="field"><label>Nombre completo</label><input type="text" id="aa-name" placeholder="Nombre Apellido"></div>
-    <div class="field"><label>Usuario</label><input type="text" id="aa-user" placeholder="usuario_sin_espacios"></div>
-    <div class="field"><label>Contraseña</label><input type="password" id="aa-pass" placeholder="••••••••"></div>
+    <div class="modal-title">✏ Editar Vendedor</div>
+    <input type="hidden" id="e-id">
+    <div style="display:flex;flex-direction:column;gap:.8rem">
+      <div class="field">
+        <label>Nombre completo</label>
+        <input type="text" id="e-name" placeholder="Nombre Apellido">
+      </div>
+      <div class="field">
+        <label>Usuario (login)</label>
+        <input type="text" id="e-user" placeholder="usuario_sin_espacios" oninput="sanitizeUser('e-user')">
+      </div>
+      <div class="field">
+        <label>Nueva contraseña <span style="color:var(--muted);font-size:.6rem;font-weight:400">(vacío = no cambiar)</span></label>
+        <div class="copy-row">
+          <input type="text" id="e-pass" placeholder="dejar vacío para mantener">
+          <button class="btn btn-ghost copy-btn" onclick="generatePassInto('e-pass')" title="Generar">🎲</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Color de avatar</label>
+        <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:2px" id="e-color-picker"></div>
+      </div>
+      <div id="edit-error" style="display:none;background:rgba(252,92,124,.1);border:1px solid rgba(252,92,124,.3);color:var(--danger);border-radius:7px;padding:.65rem .9rem;font-family:var(--mono);font-size:.72rem"></div>
+    </div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeAddAdmin()">Cancelar</button>
-      <button class="btn btn-primary" onclick="addAdmin()">Crear Admin</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-edit')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveEdit()">Guardar cambios</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL EDITAR ADMIN -->
-<div class="modal-overlay" id="edit-admin-modal">
+<!-- Ver credencial individual -->
+<div class="modal-overlay" id="modal-cred">
   <div class="modal">
-    <h2>Editar Admin</h2>
-    <input type="hidden" id="ea-id">
-    <div class="field"><label>Nombre completo</label><input type="text" id="ea-name"></div>
-    <div class="field"><label>Nueva contraseña <span style="color:var(--muted);font-size:.6rem">(vacío = no cambiar)</span></label><input type="password" id="ea-pass" placeholder="••••••••"></div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeEditAdmin()">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveEditAdmin()">Guardar</button>
+    <div class="modal-title">🔑 Credencial</div>
+    <div style="display:flex;flex-direction:column;gap:.6rem">
+      <div class="field">
+        <label>Nombre</label>
+        <div id="mc-cred-name" style="font-family:var(--mono);font-size:.82rem;padding:.5rem 0;color:var(--accent)"></div>
+      </div>
+      <div class="field">
+        <label>Usuario</label>
+        <div class="copy-row">
+          <input type="text" id="mc-cred-user" readonly>
+          <button class="btn btn-ghost copy-btn" onclick="copyField('mc-cred-user')" title="Copiar">⧉</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Contraseña</label>
+        <div class="copy-row">
+          <input type="text" id="mc-cred-pass" readonly>
+          <button class="btn btn-ghost copy-btn" onclick="copyField('mc-cred-pass')" title="Copiar">⧉</button>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="copyBothCreds()">📋 Copiar usuario + contraseña</button>
     </div>
-  </div>
-</div>
-
-<!-- MODAL AÑADIR TIEMPO (individual) -->
-<div class="modal-overlay" id="add-time-modal">
-  <div class="modal">
-    <h2>⊕ Añadir Tiempo</h2>
-    <p style="font-family:var(--mono);font-size:.72rem;color:var(--text)">Key: <span id="at-key-name" style="color:var(--accent);font-weight:600">—</span></p>
-    <p style="font-family:var(--mono);font-size:.64rem;color:var(--muted);line-height:1.5">El tiempo se suma al restante actual.<br>Si le quedan 2d + 1d que añades = 3d restantes.</p>
-    <div class="duration-row">
-      <div class="field"><label>Días</label><input type="number" id="at-days" value="0" min="0" max="365"></div>
-      <div class="field"><label>Horas</label><input type="number" id="at-hours" value="0" min="0" max="23"></div>
-      <div class="field"><label>Min</label><input type="number" id="at-mins" value="0" min="0" max="59"></div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeAddTimeModal()">Cancelar</button>
-      <button class="btn btn-warn" style="background:rgba(252,192,92,.18);border:1px solid rgba(252,192,92,.4);color:var(--warn)" onclick="confirmAddTime()">⊕ Añadir</button>
+    <div class="modal-actions" style="margin-top:.25rem">
+      <button class="btn btn-ghost btn-full" onclick="closeModal('modal-cred')">Cerrar</button>
     </div>
   </div>
 </div>
 
 <div id="toast-container"></div>
 
-<!-- ════════════════════════════════
-     SCRIPT
-════════════════════════════════ -->
+<!-- ════════ SCRIPT ════════ -->
 <script>
 /* ══════════════════════════════════════
-   PALETA DE AVATARES (colores por admin)
+   AVATAR COLORS
 ══════════════════════════════════════ */
 const AVATAR_COLORS = [
   ['#7c5cfc','#2a1f6e'],['#5cfc9a','#1a4a30'],['#fc5c7c','#4a1f2e'],
@@ -762,32 +838,32 @@ const AVATAR_COLORS = [
   ['#fc5c5c','#4a1a1a'],['#5c8afc','#1a2a4a'],['#c45cfc','#3a1a4a'],
   ['#fc785c','#4a2a1a'],['#5cfca4','#1a4a34'],['#fcdc5c','#4a401a']
 ];
-
 function avatarStyle(idx){
-  const [fg, bg] = AVATAR_COLORS[idx % AVATAR_COLORS.length];
+  const [fg,bg]=AVATAR_COLORS[idx%AVATAR_COLORS.length];
   return `background:${bg};color:${fg};border:1.5px solid ${fg}40`;
+}
+function initials(name){
+  return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
 }
 
 /* ══════════════════════════════════════
-   DEFAULT ACCOUNTS
-══════════════════════════════════════ */
-/* ══════════════════════════════════════
-   CREDENCIALES SUPER ADMIN (XOR)
-   No existen en texto plano en ningún
-   lado — solo se descifran en runtime
+   AUTH (XOR — mismo mecanismo que el panel)
 ══════════════════════════════════════ */
 const _X=[38,109,81,35,57,107,76,118];
 const _U=[117,5,48,71,86,28];
 const _P=[98,8,39,70,85,4,60,19,84,25,62,76,85,24];
 function _d(a,k){return a.map((c,i)=>String.fromCharCode(c^k[i%k.length])).join('');}
+let _customSuperPass = null; // si el admin cambia la pass en runtime
 
-const DEFAULT_ADMINS = [
-  { id:'super', username:_d(_U,_X), name:'Super Admin', role:'super', colorIdx:0, createdAt: Date.now() }
-];
+function checkSuperCreds(u,p){
+  const baseU = _d(_U,_X), baseP = _d(_P,_X);
+  if(u !== baseU) return false;
+  if(_customSuperPass !== null) return p === _customSuperPass;
+  return p === baseP;
+}
 
 /* ══════════════════════════════════════
-   15 VENDEDORES PRE-DEFINIDOS
-   Super admin puede editar nombre/pass
+   API CONFIG
 ══════════════════════════════════════ */
 // ════════════════════════════════════════════════════════════════════════
 //  FIREBASE CONFIG — pega tus valores aquí
@@ -803,159 +879,91 @@ const FIREBASE_CONFIG = {
 };
 // ════════════════════════════════════════════════════════════════════════
 
-// Firebase SDK (loaded via CDN in <head>)
 let _db = null;
-
-async function initFirebase() {
-  if (_db) return _db;
-  if (!window.firebase) {
-    showNetError('Firebase SDK no cargado');
-    return null;
-  }
-  if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+async function initFirebase(){
+  if(_db) return _db;
+  if(!window.firebase){ toast('danger','Firebase SDK no cargado'); return null; }
+  if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
   _db = firebase.database();
   return _db;
 }
+async function fbGet(p){ const db=await initFirebase(); if(!db) return null; try{ return (await db.ref(p).once('value')).val(); }catch(e){ return null; } }
+async function fbSet(p,d){ const db=await initFirebase(); if(!db) return false; try{ await db.ref(p).set(d); return true; }catch(e){ return false; } }
+async function fbUpdate(p,d){ const db=await initFirebase(); if(!db) return false; try{ await db.ref(p).update(d); return true; }catch(e){ return false; } }
+async function fbRemove(p){ const db=await initFirebase(); if(!db) return false; try{ await db.ref(p).remove(); return true; }catch(e){ return false; } }
+async function _sha256(str){ const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str)); return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join(''); }
 
-async function fbGet(path) {
-  const db = await initFirebase();
-  if (!db) return null;
-  try {
-    const snap = await db.ref(path).once('value');
-    return snap.val();
-  } catch(e) { console.error('fbGet', e); return null; }
-}
-
-async function fbSet(path, data) {
-  const db = await initFirebase();
-  if (!db) return false;
-  try { await db.ref(path).set(data); return true; }
-  catch(e) { console.error('fbSet', e); return false; }
-}
-
-async function fbUpdate(path, data) {
-  const db = await initFirebase();
-  if (!db) return false;
-  try { await db.ref(path).update(data); return true; }
-  catch(e) { console.error('fbUpdate', e); return false; }
-}
-
-async function fbRemove(path) {
-  const db = await initFirebase();
-  if (!db) return false;
-  try { await db.ref(path).remove(); return true; }
-  catch(e) { console.error('fbRemove', e); return false; }
-}
-
-async function fbPush(path, data) {
-  const db = await initFirebase();
-  if (!db) return null;
-  try {
-    const ref = await db.ref(path).push(data);
-    return ref.key;
-  } catch(e) { console.error('fbPush', e); return null; }
-}
-
-// Auth token helpers (session stored locally, validated via Firebase Auth)
-async function api(method, path, body) {
-  // Legacy helper — now maps to Firebase ops
-  // Kept for compatibility with existing call sites
-  const token = localStorage.getItem('sc_token') || '';
-  try {
-    const res = await fetch(FIREBASE_CONFIG.databaseURL.replace('https://','https://') + path, {
-      method,
-      headers: { 'Content-Type': 'application/json', 'x-sc-token': token },
-      body: body ? JSON.stringify(body) : undefined
-    });
-    return await res.json();
-  } catch(e) {
-    return { ok: false, error: 'network_error' };
-  }
-}
-
-function showNetError(msg) {
-  toast('danger', '⊗ ' + (msg || 'Error de conexión con Firebase'));
-}
-
-const PRE_SELLERS = [
-  { id:'sc_v01', username:'vendedor01', password:'ShadowV01#', name:'Vendedor 01', role:'admin', colorIdx:1,  createdAt: Date.now() },
-  { id:'sc_v02', username:'vendedor02', password:'ShadowV02#', name:'Vendedor 02', role:'admin', colorIdx:2,  createdAt: Date.now() },
-  { id:'sc_v03', username:'vendedor03', password:'ShadowV03#', name:'Vendedor 03', role:'admin', colorIdx:3,  createdAt: Date.now() },
-  { id:'sc_v04', username:'vendedor04', password:'ShadowV04#', name:'Vendedor 04', role:'admin', colorIdx:4,  createdAt: Date.now() },
-  { id:'sc_v05', username:'vendedor05', password:'ShadowV05#', name:'Vendedor 05', role:'admin', colorIdx:5,  createdAt: Date.now() },
-  { id:'sc_v06', username:'vendedor06', password:'ShadowV06#', name:'Vendedor 06', role:'admin', colorIdx:6,  createdAt: Date.now() },
-  { id:'sc_v07', username:'vendedor07', password:'ShadowV07#', name:'Vendedor 07', role:'admin', colorIdx:7,  createdAt: Date.now() },
-  { id:'sc_v08', username:'vendedor08', password:'ShadowV08#', name:'Vendedor 08', role:'admin', colorIdx:8,  createdAt: Date.now() },
-  { id:'sc_v09', username:'vendedor09', password:'ShadowV09#', name:'Vendedor 09', role:'admin', colorIdx:9,  createdAt: Date.now() },
-  { id:'sc_v10', username:'vendedor10', password:'ShadowV10#', name:'Vendedor 10', role:'admin', colorIdx:10, createdAt: Date.now() },
-  { id:'sc_v11', username:'vendedor11', password:'ShadowV11#', name:'Vendedor 11', role:'admin', colorIdx:11, createdAt: Date.now() },
-  { id:'sc_v12', username:'vendedor12', password:'ShadowV12#', name:'Vendedor 12', role:'admin', colorIdx:12, createdAt: Date.now() },
-  { id:'sc_v13', username:'vendedor13', password:'ShadowV13#', name:'Vendedor 13', role:'admin', colorIdx:13, createdAt: Date.now() },
-  { id:'sc_v14', username:'vendedor14', password:'ShadowV14#', name:'Vendedor 14', role:'admin', colorIdx:14, createdAt: Date.now() },
-  { id:'sc_v15', username:'vendedor15', password:'ShadowV15#', name:'Vendedor 15', role:'admin', colorIdx:0,  createdAt: Date.now() },
-];
+// Legacy shim (some call sites still use api())
+async function api(method, path, body){ return { ok:false, error:'use Firebase directly' }; }
 
 /* ══════════════════════════════════════
    STATE
 ══════════════════════════════════════ */
-let admins   = [];
-let allKeys  = [];  // { id, username, expire, created, typeLabel, ownerId, ownerName }
-let session  = null; // admin actual
-let todayCount = 0;
-let todayDate  = '';
-let tickInterval;
-let currentPage   = 'dashboard';
-let myFilter      = 'all';
-let allFilter     = 'all';
-let rankFilter    = 'all';
-let modalAction   = null;
-let modalTarget   = null;
-let addTimeTarget = null;
+const STORAGE_KEY_VENDORS   = 'sc_admins';
+const STORAGE_KEY_LOG       = 'scvm_log';
+const STORAGE_KEY_SESS      = 'scvm_session';
+const MAX_VENDORS           = 15; // TODO: ajustable desde Firebase
+
+let vendors     = [];
+let activityLog = [];
+let session     = null;
+let vFilter     = 'all';
+let selectedColor = 0;
+let editSelectedColor = 0;
+
+/* ══════════════════════════════════════
+   DEFAULT VENDORS (15 pre-built)
+══════════════════════════════════════ */
+const DEFAULT_VENDORS = Array.from({length:15},(_,i)=>{
+  const n = String(i+1).padStart(2,'0');
+  return {
+    id: `sc_v${n}`,
+    username: `vendedor${n}`,
+    password: `ShadowV${n}#`,
+    name: `Vendedor ${n}`,
+    role: 'admin',
+    colorIdx: (i+1)%AVATAR_COLORS.length,
+    createdAt: Date.now(),
+    active: true
+  };
+});
 
 /* ══════════════════════════════════════
    STORAGE
 ══════════════════════════════════════ */
 function loadStorage(){
-  // Session from token stored locally
-  const sess = localStorage.getItem('sc_session');
-  if(sess) session = JSON.parse(sess);
+  try {
+    const rawSess = localStorage.getItem(STORAGE_KEY_SESS);
+    session = rawSess ? JSON.parse(rawSess) : null;
+  } catch { session = null; }
 }
 
-function saveStorage(){
-  // No-op: all data lives on the server now.
-  // Keys and vendors are fetched from API.
-}
+function saveVendors(){ /* data lives on server */ }
+function saveLog(){ /* data lives on server */ }
 
 function saveSession(){
-  if(session){
-    localStorage.setItem('sc_session', JSON.stringify(session));
-  } else {
-    localStorage.removeItem('sc_session');
-    localStorage.removeItem('sc_token');
+  if(session) localStorage.setItem(STORAGE_KEY_SESS, JSON.stringify(session));
+  else {
+    localStorage.removeItem(STORAGE_KEY_SESS);
+    localStorage.removeItem('scvm_token');
   }
-}
-
-async function loadKeysFromServer(){
-  const db = await initFirebase();
-  if(!db){ showNetError(); return; }
-  let snap;
-  if(session.role === 'super'){
-    snap = await db.ref('keys').once('value');
-  } else {
-    snap = await db.ref('keys').orderByChild('ownerId').equalTo(session.id).once('value');
-  }
-  const raw = snap.val() || {};
-  allKeys = Object.entries(raw).map(([id, k]) => ({...k, id}));
-  renderMyKeys(); renderAllKeys(); updateMyStats(); renderRanking(); updateRankStats();
 }
 
 async function loadVendorsFromServer(){
-  if(session?.role !== 'super') return;
-  const snap = await (await initFirebase()).ref('vendors').once('value');
-  const raw  = snap.val() || {};
-  admins = [{ id:'super', username:session.username, name:'Super Admin', role:'super', colorIdx:0, createdAt:0 },
-            ...Object.entries(raw).filter(([id,v])=>v.role!=='super').map(([id,v])=>({...v,id}))];
-  renderAdmins();
+  const raw = await fbGet('vendors');
+  if(!raw){ toast('danger','⊗ Error cargando vendedores de Firebase'); return; }
+  vendors = Object.entries(raw)
+    .filter(([id,v])=>v.role!=='super')
+    .map(([id,v])=>({...v, id, active:v.active!==false}));
+  renderVendors(); renderStats(); renderExportBox();
+}
+
+async function loadLogFromServer(){
+  const raw = await fbGet('log');
+  if(!raw){ document.getElementById('sb-badge-log').textContent='0'; return; }
+  activityLog = Array.isArray(raw) ? raw : Object.values(raw);
+  activityLog.sort((a,b)=>b.ts-a.ts);
+  document.getElementById('sb-badge-log').textContent = activityLog.length;
 }
 
 /* ══════════════════════════════════════
@@ -967,1051 +975,794 @@ async function doLogin(){
   const err = document.getElementById('login-error');
   const btn = document.querySelector('#login-screen .btn-primary');
   if(btn){ btn.textContent='Verificando...'; btn.disabled=true; }
-
   try {
-    await initFirebase();
-    // Firebase Auth: email login using username as email alias stored in /vendors/{id}/email
-    // Step 1: find vendor by username in DB
     const db = await initFirebase();
-    const snap = await db.ref('vendors').orderByChild('username').equalTo(u).once('value');
-    const vendors_data = snap.val();
-
-    if(!vendors_data){
-      err.textContent='Usuario o contraseña incorrectos';
-      err.classList.add('show');
-      document.getElementById('login-pass').value='';
-      if(btn){btn.textContent='Entrar →';btn.disabled=false;}
-      return;
-    }
-
-    const vendorId = Object.keys(vendors_data)[0];
-    const vendor   = vendors_data[vendorId];
-
-    // Step 2: verify password (hashed stored in /vendors/{id}/passwordHash)
+    if(!db) throw new Error('Firebase no disponible');
+    // Find vendor by username
+    const snap = await db.ref('vendors').once('value');
+    const data = snap.val();
+    if(!data){ throw new Error('not_found'); }
+    // Find by username client-side (no index needed)
+    const vid = Object.keys(data).find(id => data[id].username === u);
+    if(!vid){ throw new Error('not_found'); }
+    const vendor = data[vid];
+    if(vendor.role !== 'super'){ throw new Error('not_super'); }
     const ph = await _sha256(p + 'sc_salt_2025');
-    if(vendor.passwordHash !== ph || vendor.active === false){
-      err.textContent='Usuario o contraseña incorrectos';
-      err.classList.add('show');
-      document.getElementById('login-pass').value='';
-      if(btn){btn.textContent='Entrar →';btn.disabled=false;}
-      return;
-    }
-
-    session = { id:vendorId, username:vendor.username, name:vendor.name,
-                role:vendor.role, colorIdx:vendor.colorIdx||0 };
+    if(vendor.passwordHash !== ph || vendor.active===false){ throw new Error('wrong_pass'); }
+    session = { id:vid, username:vendor.username, name:vendor.name, role:vendor.role, colorIdx:vendor.colorIdx||0 };
     saveSession();
     err.classList.remove('show');
     document.getElementById('login-user').value='';
     document.getElementById('login-pass').value='';
-    if(btn){btn.textContent='Entrar →';btn.disabled=false;}
+    if(btn){ btn.textContent='Entrar →'; btn.disabled=false; }
     bootApp();
   } catch(e) {
-    err.textContent='Error de conexión con Firebase';
+    err.textContent = e.message==='Firebase no disponible'
+      ? 'No se puede conectar a Firebase'
+      : 'Credenciales incorrectas o sin acceso super admin';
     err.classList.add('show');
     document.getElementById('login-pass').value='';
-    if(btn){btn.textContent='Entrar →';btn.disabled=false;}
+    if(btn){ btn.textContent='Entrar →'; btn.disabled=false; }
   }
 }
-
-// SHA-256 via Web Crypto API
-async function _sha256(str) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-}
-
-document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
-document.getElementById('login-user').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('login-pass').focus(); });
 
 function doLogout(){
   session = null;
   saveSession();
-  document.getElementById('main-header').style.display='none';
   document.getElementById('app').style.display='none';
-  document.getElementById('bottom-nav').style.display='none';
   document.getElementById('login-screen').style.display='flex';
-  clearInterval(tickInterval);
 }
+
+document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+document.getElementById('login-user').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-pass').focus();});
 
 function bootApp(){
-  // Load fresh data from server on startup
-  setTimeout(()=>{ loadKeysFromServer(); if(session?.role==='super') loadVendorsFromServer(); }, 200);
   document.getElementById('login-screen').style.display='none';
-  document.getElementById('main-header').style.display='flex';
   document.getElementById('app').style.display='block';
-  document.getElementById('bottom-nav').style.display='flex';
-  setupHeaderUser();
-  setupSuperUI();
-  setupResponsive();
-  window.addEventListener('resize', setupResponsive);
-  showPage('dashboard');
-  startTick();
+  buildColorPicker('color-picker','selectedColor',0);
+  updateLivePrev();
+  updateCapacity();
+  updateNewBtn();
+  document.getElementById('sb-badge-log').textContent = '…';
+  // Load from server
+  loadVendorsFromServer().then(()=>{ showPage('vendors'); });
+  loadLogFromServer();
 }
-
-function setupHeaderUser(){
-  const initials = session.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-  document.getElementById('header-avatar').textContent = initials;
-  document.getElementById('header-avatar').setAttribute('style', avatarStyle(session.colorIdx) + ';width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;flex-shrink:0');
-  document.getElementById('header-name').textContent = session.name.split(' ')[0];
-  const roleBadge = document.getElementById('header-role');
-  if(session.role==='super'){ roleBadge.className='role-badge role-super'; roleBadge.textContent='SUPER'; }
-  else { roleBadge.className='role-badge role-admin'; roleBadge.textContent='RESELLER'; }
-}
-
-function setupSuperUI(){
-  const isSuper = session.role==='super';
-  document.getElementById('sb-super-section').style.display = isSuper?'':'none';
-  document.getElementById('sb-admins').style.display         = isSuper?'':'none';
-  document.getElementById('sb-all-keys').style.display       = isSuper?'':'none';
-  document.getElementById('perfil-super-section').style.display = isSuper?'':'none';
-
-  // Pestaña "Personalizada": solo visible para super admin
-  const tabCustomBtn = document.getElementById('tab-btn-custom');
-  if(tabCustomBtn) tabCustomBtn.style.display = isSuper ? '' : 'none';
-
-  // Renderizar contenido del panel custom según rol
-  const wrap = document.getElementById('custom-form-wrap');
-  if(wrap){
-    if(isSuper){
-      wrap.innerHTML = `
-        <h3>Duración Personalizada</h3>
-        <div class="duration-row">
-          <div class="field"><label>Días</label><input type="number" id="c-days" value="0" min="0" max="365" oninput="updateCustomPreview()"></div>
-          <div class="field"><label>Horas</label><input type="number" id="c-hours" value="0" min="0" max="23" oninput="updateCustomPreview()"></div>
-          <div class="field"><label>Min</label><input type="number" id="c-mins" value="0" min="0" max="59" oninput="updateCustomPreview()"></div>
-        </div>
-        <div class="field">
-          <label>Cantidad</label>
-          <input type="number" id="custom-qty" value="1" min="1" max="50">
-        </div>
-        <div class="field">
-          <label>Vista previa</label>
-          <div class="preview-box"><span id="custom-preview" style="font-family:var(--mono);font-size:.8rem;color:var(--warn)">0d 0h 0m</span></div>
-        </div>
-        <button class="btn btn-success btn-full" onclick="customGenerate()">⊞ Generar</button>`;
-    } else {
-      wrap.innerHTML = `
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;padding:2rem 1rem;text-align:center">
-          <div style="font-size:2rem">🔒</div>
-          <div style="font-weight:600;font-size:.9rem">Acceso restringido</div>
-          <div style="font-family:var(--mono);font-size:.68rem;color:var(--muted);line-height:1.5">Las keys personalizadas solo<br>las puede crear el admin principal.</div>
-        </div>`;
-    }
-  }
-}
-
-/* ══════════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════════ */
-function setupResponsive(){
-  const isDesktop = window.matchMedia('(min-width:768px)').matches;
-  document.getElementById('sidebar').style.display = isDesktop ? 'flex' : 'none';
-  document.querySelector('.desktop-wrap').style.display = isDesktop ? 'grid' : 'block';
-  // tab / gen-grid
-  document.querySelectorAll('.tab-bar').forEach(el => el.style.display = isDesktop ? 'none' : 'flex');
-  if(isDesktop){
-    // Desktop: ambos paneles visibles en grid
-    document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'flex');
-    document.querySelectorAll('.gen-grid').forEach(el => { el.style.display='grid'; el.style.flexDirection=''; });
-  } else {
-    // Mobile: solo el panel activo — el inactivo se oculta
-    document.querySelectorAll('.tab-content').forEach(el => {
-      el.style.display = el.classList.contains('active') ? 'flex' : 'none';
-    });
-    document.querySelectorAll('.gen-grid').forEach(el => { el.style.display='flex'; el.style.flexDirection='column'; });
-  }
-  // cards vs table
-  document.querySelectorAll('.user-list').forEach(el => el.style.display = isDesktop ? 'none' : 'flex');
-  document.querySelectorAll('.dt-card').forEach(el => el.style.display = isDesktop ? 'block' : 'none');
-  renderMyKeys(); renderAllKeys();
-}
-
 
 /* ══════════════════════════════════════
    NAVIGATION
 ══════════════════════════════════════ */
 function showPage(name){
-  // guard: super only pages
-  if((name==='admins'||name==='todas-keys') && session?.role!=='super'){
-    toast('warn','⚠ Acceso denegado'); return;
-  }
-  currentPage = name;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const pg = document.getElementById('page-'+name);
   if(pg) pg.classList.add('active');
-  document.querySelectorAll('.bn-item').forEach(b=>b.classList.toggle('active',b.dataset.page===name));
-  document.querySelectorAll('.aside-item').forEach(b=>b.classList.toggle('active', b.getAttribute('onclick')?.includes(`'${name}'`)));
-  window.scrollTo({top:0,behavior:'smooth'});
-  // refresh
-  if(name==='dashboard')   { refreshDash(); }
-  if(name==='mis-keys')    { renderMyKeys(); updateMyStats(); }
-  if(name==='ranking')     { renderRanking(); updateRankStats(); }
-  if(name==='todas-keys')  { renderAllKeys(); populateBulkSellerSelect(); }
-  if(name==='admins')      { renderAdmins(); }
-  if(name==='perfil')      { renderPerfil(); loadFirebaseConfig(); }
-}
 
-/* ══════════════════════════════════════
-   TABS
-══════════════════════════════════════ */
-function switchTab(btn, tabId){
-  const isDesktop = window.matchMedia('(min-width:768px)').matches;
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.tab-content').forEach(t=>{
-    t.classList.remove('active');
-    if(!isDesktop) t.style.display = 'none'; // ocultar inactivos en mobile
+  // sidebar + mobile nav active state
+  ['vendors','create','export','activity','settings'].forEach(n=>{
+    const sb = document.getElementById('sb-'+n);
+    const mn = document.getElementById('mn-'+n);
+    if(sb) sb.classList.toggle('active', n===name);
+    if(mn) mn.classList.toggle('active', n===name);
   });
-  const t = document.getElementById(tabId);
-  if(t){ t.classList.add('active'); t.style.display='flex'; }
+
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  if(name==='vendors')  { renderVendors(); renderStats(); }
+  if(name==='export')   { renderExportBox(); renderExportSearch(); }
+  if(name==='activity') { renderLog(); }
+  if(name==='create')   { clearCreateForm(); updateCreateLock(); }
 }
 
 /* ══════════════════════════════════════
    FILTER
 ══════════════════════════════════════ */
-function setFilter(el, scope){
-  const f = el.dataset.filter;
+function setVFilter(el, f){
+  vFilter = f;
   el.closest('.filter-bar').querySelectorAll('.filter-chip').forEach(c=>c.classList.toggle('active',c===el));
-  if(scope==='my'){ myFilter=f; renderMyKeys(); }
-  else            { allFilter=f; renderAllKeys(); }
+  renderVendors();
 }
-function setRankFilter(el, f){
-  rankFilter = f;
-  document.querySelectorAll('[data-rfilter]').forEach(c=>c.classList.toggle('active',c===el));
-  renderRanking(); updateRankStats();
+
+function filteredVendors(){
+  const q=(document.getElementById('v-search')?.value||'').toLowerCase();
+  let list=[...vendors];
+  if(q) list=list.filter(v=>v.name.toLowerCase().includes(q)||v.username.toLowerCase().includes(q));
+  const now=Date.now();
+  if(vFilter==='active')   list=list.filter(v=>v.active!==false);
+  if(vFilter==='inactive') list=list.filter(v=>v.active===false);
+  if(vFilter==='new')      list=list.filter(v=>now-v.createdAt<=7*86400000);
+  return list;
+}
+
+/* ══════════════════════════════════════
+   STATS
+══════════════════════════════════════ */
+function renderStats(){
+  const now=Date.now();
+  const total   = vendors.length;
+  const active  = vendors.filter(v=>v.active!==false).length;
+  const inactive= vendors.filter(v=>v.active===false).length;
+  const newV    = vendors.filter(v=>now-v.createdAt<=7*86400000).length;
+  document.getElementById('st-total').textContent   = total;
+  document.getElementById('st-active').textContent  = active;
+  document.getElementById('st-inactive').textContent= inactive;
+  document.getElementById('st-new').textContent     = newV;
+  document.getElementById('sb-badge-total').textContent = total;
+  document.getElementById('vendors-sub').textContent = `shadow-chams // ${total} vendedor${total!==1?'es':''} de ${MAX_VENDORS} registrados`;
+  updateCapacity();
+  updateNewBtn();
+}
+
+function updateCapacity(){
+  const total = vendors.length;
+  const pct   = Math.min((total/MAX_VENDORS)*100, 100);
+  const fillEl= document.getElementById('cap-fill');
+  const cntEl = document.getElementById('cap-count');
+  const gridEl= document.getElementById('cap-slot-grid');
+  if(!fillEl) return;
+
+  fillEl.style.width = pct+'%';
+  fillEl.className   = 'capacity-fill';
+  if(pct >= 100)      fillEl.classList.add('full');
+  else if(pct >= 80)  fillEl.classList.add('high');
+  else if(pct >= 50)  fillEl.classList.add('mid');
+  else                fillEl.classList.add('low');
+
+  if(cntEl) cntEl.textContent = `${total} / ${MAX_VENDORS}`;
+  if(cntEl){
+    cntEl.style.color = pct>=100 ? 'var(--danger)' : pct>=80 ? 'var(--warn)' : 'var(--text)';
+  }
+
+  // Slot grid — 15 squares
+  if(gridEl){
+    gridEl.innerHTML = Array.from({length:MAX_VENDORS},(_,i)=>{
+      const v = vendors[i];
+      if(!v) return `<div class="slot empty" title="Slot libre">${i+1}</div>`;
+      const isActive = v.active !== false;
+      const cls = isActive ? 'slot used-active' : 'slot used-inactive';
+      const ini = initials(v.name);
+      return `<div class="${cls}" title="${escHtml(v.name)} (@${escHtml(v.username)}) — ${isActive?'activo':'inactivo'}" onclick="openCred('${v.id}')" style="cursor:pointer;font-size:.62rem;font-weight:700;color:${isActive?'var(--success)':'var(--danger)'}">${ini}</div>`;
+    }).join('');
+  }
+}
+
+function updateNewBtn(){
+  const btn = document.getElementById('btn-new-vendor');
+  if(!btn) return;
+  const atLimit = vendors.length >= MAX_VENDORS;
+  btn.disabled = atLimit;
+  btn.className = atLimit ? 'btn btn-danger btn-sm' : 'btn btn-primary btn-sm';
+  btn.textContent = atLimit ? '⛔ Límite alcanzado' : '⊞ Nuevo';
+  btn.title = atLimit ? `Máximo de ${MAX_VENDORS} vendedores alcanzado` : '';
+}
+
+function goToCreate(){
+  if(vendors.length >= MAX_VENDORS){
+    toast('danger',`⛔ Límite de ${MAX_VENDORS} vendedores alcanzado — elimina uno para continuar`);
+    showPage('create'); // still go, show the locked UI
+    return;
+  }
+  showPage('create');
+}
+
+/* ══════════════════════════════════════
+   RENDER VENDORS
+══════════════════════════════════════ */
+let passVisible = new Set();
+
+function renderVendors(){
+  renderStats();
+  const list = filteredVendors();
+  renderVTable(list);
+  renderVCards(list);
+}
+
+function renderVTable(list){
+  const tbody = document.getElementById('v-tbody');
+  if(!list.length){
+    tbody.innerHTML=`<tr><td colspan="8"><div class="empty"><span class="empty-icon">👥</span>Sin resultados</div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = list.map((v,i)=>{
+    const isActive = v.active !== false;
+    const statusHtml = isActive
+      ? `<span class="badge badge-on"><span class="badge-dot"></span>Activo</span>`
+      : `<span class="badge badge-off"><span class="badge-dot"></span>Inactivo</span>`;
+    const passShown = passVisible.has(v.id);
+    const passHtml = passShown
+      ? `<span class="vt-pass-val">${escHtml(v.password)}</span><button class="btn btn-ghost btn-xs" onclick="togglePass('${v.id}')">🙈</button>`
+      : `<span class="vt-pass-val vt-pass-mask">••••••••</span><button class="btn btn-ghost btn-xs" onclick="togglePass('${v.id}')">👁</button>`;
+    const createdStr = new Date(v.createdAt).toLocaleDateString('es',{day:'2-digit',month:'short',year:'2-digit'});
+    const keys = getKeyCount(v.id);
+    return `<tr class="active-row">
+      <td class="vt-num">${i+1}</td>
+      <td>
+        <div class="vt-name-cell">
+          <div class="vt-avatar" style="${avatarStyle(v.colorIdx)}">${initials(v.name)}</div>
+          <div>
+            <div class="vt-name">${escHtml(v.name)}</div>
+            <div class="vt-user">${escHtml(v.username)}</div>
+          </div>
+        </div>
+      </td>
+      <td style="font-family:var(--mono);font-size:.75rem">${escHtml(v.username)}</td>
+      <td>
+        <div class="vt-pass-wrap">${passHtml}</div>
+      </td>
+      <td>${statusHtml}</td>
+      <td class="vt-keys">${keys}</td>
+      <td style="font-family:var(--mono);font-size:.65rem;color:var(--muted)">${createdStr}</td>
+      <td>
+        <div class="vt-actions">
+          <button class="btn btn-ghost btn-xs" onclick="openCred('${v.id}')" title="Ver credencial">🔑</button>
+          <button class="btn btn-warn btn-xs" onclick="openEdit('${v.id}')" title="Editar">✏</button>
+          <button class="btn ${isActive?'btn-danger':'btn-success'} btn-xs" onclick="toggleVendor('${v.id}')" title="${isActive?'Desactivar':'Activar'}">${isActive?'⊘':'✓'}</button>
+          <button class="btn btn-danger btn-xs" onclick="confirmDelete('${v.id}')" title="Eliminar">⊗</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function renderVCards(list){
+  const wrap = document.getElementById('v-cards');
+  if(!list.length){
+    wrap.innerHTML=`<div class="empty"><span class="empty-icon">👥</span>Sin resultados</div>`;
+    return;
+  }
+  wrap.innerHTML = list.map((v,i)=>{
+    const isActive = v.active !== false;
+    const passShown = passVisible.has(v.id);
+    const keys = getKeyCount(v.id);
+    return `<div class="vc">
+      <div class="vc-top">
+        <div class="vc-avatar" style="${avatarStyle(v.colorIdx)}">${initials(v.name)}</div>
+        <div style="flex:1;min-width:0">
+          <div class="vc-name">${escHtml(v.name)}</div>
+          <div class="vc-user">@${escHtml(v.username)}</div>
+        </div>
+        <span class="badge ${isActive?'badge-on':'badge-off'}"><span class="badge-dot"></span>${isActive?'Activo':'Inactivo'}</span>
+      </div>
+      <div class="vc-body">
+        <div class="vc-row">
+          <span class="vc-label">Contraseña</span>
+          <div style="display:flex;align-items:center;gap:.35rem">
+            <span style="font-family:var(--mono);font-size:.72rem">${passShown?escHtml(v.password):'••••••••'}</span>
+            <button class="btn btn-ghost btn-xs" onclick="togglePass('${v.id}')">${passShown?'🙈':'👁'}</button>
+          </div>
+        </div>
+        <div class="vc-row">
+          <span class="vc-label">Keys generadas</span>
+          <span style="font-family:var(--mono);font-size:.78rem;color:var(--accent);font-weight:600">${keys}</span>
+        </div>
+      </div>
+      <div class="vc-actions">
+        <button class="btn btn-ghost btn-sm" style="flex:1" onclick="openCred('${v.id}')">🔑 Cred</button>
+        <button class="btn btn-warn btn-sm" style="flex:1" onclick="openEdit('${v.id}')">✏ Editar</button>
+        <button class="btn ${isActive?'btn-danger':'btn-success'} btn-sm" onclick="toggleVendor('${v.id}')">${isActive?'⊘ Desact.':'✓ Activar'}</button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="confirmDelete('${v.id}')">⊗</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function togglePass(id){
+  if(passVisible.has(id)) passVisible.delete(id);
+  else passVisible.add(id);
+  renderVendors();
+}
+
+function getKeyCount(vendorId){
+  try {
+    const keys = JSON.parse(localStorage.getItem('sc_allkeys')||'[]');
+    return keys.filter(k=>k.ownerId===vendorId).length;
+  } catch { return 0; }
+}
+
+/* ══════════════════════════════════════
+   CREATE
+══════════════════════════════════════ */
+function updateCreateLock(){
+  const atLimit = vendors.length >= MAX_VENDORS;
+  const limitBanner     = document.getElementById('limit-banner');
+  const lockedCard      = document.getElementById('create-locked-card');
+  const formCard        = document.getElementById('create-form-card');
+  const slotsLeftLabel  = document.getElementById('create-slots-left');
+  const remaining = MAX_VENDORS - vendors.length;
+
+  if(limitBanner) limitBanner.style.display = atLimit ? 'flex' : 'none';
+  if(lockedCard)  lockedCard.style.display  = atLimit ? 'block' : 'none';
+  if(formCard)    formCard.style.display    = atLimit ? 'none'  : 'block';
+  if(slotsLeftLabel) slotsLeftLabel.textContent = atLimit
+    ? `⛔ ${MAX_VENDORS}/${MAX_VENDORS} — sin slots libres`
+    : `${remaining} slot${remaining!==1?'s':''} disponible${remaining!==1?'s':''}`;
+}
+
+function clearCreateForm(){
+  ['c-name','c-user','c-pass'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value='';
+  });
+  selectedColor = Math.floor(Math.random()*AVATAR_COLORS.length);
+  buildColorPicker('color-picker','selectedColor', selectedColor);
+  updateLivePrev();
+  const errEl=document.getElementById('create-error');
+  if(errEl){errEl.style.display='none';errEl.textContent='';}
+}
+
+function buildColorPicker(containerId, varName, currentIdx){
+  const wrap = document.getElementById(containerId);
+  if(!wrap) return;
+  wrap.innerHTML = AVATAR_COLORS.map(([fg,bg],i)=>`
+    <div onclick="${varName==='selectedColor'?`selectedColor=${i};buildColorPicker('color-picker','selectedColor',${i});updateLivePrev()`:`editSelectedColor=${i};buildColorPicker('e-color-picker','editSelectedColor',${i})`}"
+      style="width:26px;height:26px;border-radius:50%;background:${bg};border:2.5px solid ${currentIdx===i?fg:'transparent'};cursor:pointer;transition:border-color .15s;${currentIdx===i?`box-shadow:0 0 8px ${fg}80`:''}"></div>
+  `).join('');
+}
+
+document.getElementById('c-name')?.addEventListener('input', updateLivePrev);
+document.getElementById('c-user')?.addEventListener('input', updateLivePrev);
+
+function updateLivePrev(){
+  const name = document.getElementById('c-name')?.value || 'Nombre Vendedor';
+  const user = document.getElementById('c-user')?.value || 'usuario';
+  const ini  = name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()||'?';
+  const [fg,bg] = AVATAR_COLORS[selectedColor % AVATAR_COLORS.length];
+  const av = document.getElementById('prev-avatar');
+  if(av){ av.textContent=ini; av.setAttribute('style',`width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;background:${bg};color:${fg};border:1.5px solid ${fg}40`); }
+  const pn = document.getElementById('prev-name');
+  if(pn) pn.textContent = name||'Nombre Vendedor';
+  const pu = document.getElementById('prev-user');
+  if(pu) pu.textContent = '@'+(user||'usuario');
+}
+
+function sanitizeUser(inputId){
+  const el=document.getElementById(inputId);
+  if(!el) return;
+  el.value = el.value.replace(/[^a-zA-Z0-9_]/g,'').toLowerCase();
+}
+
+function generatePass(){
+  const pass = generatePassStr();
+  const el = document.getElementById('c-pass');
+  if(el) el.value = pass;
+}
+
+function generatePassInto(inputId){
+  const el=document.getElementById(inputId);
+  if(el) el.value = generatePassStr();
+}
+
+function generatePassStr(){
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$';
+  let s='';
+  for(let i=0;i<12;i++) s+=chars[Math.floor(Math.random()*chars.length)];
+  return s;
+}
+
+function createVendor(){
+  const name  = document.getElementById('c-name').value.trim();
+  const uname = document.getElementById('c-user').value.trim();
+  const pass  = document.getElementById('c-pass').value.trim();
+  const errEl = document.getElementById('create-error');
+
+  const showErr = msg => {
+    errEl.textContent=msg;
+    errEl.style.display='block';
+  };
+
+  if(vendors.length >= MAX_VENDORS){
+    showErr(`⛔ Límite de ${MAX_VENDORS} vendedores alcanzado. Elimina o desactiva uno para continuar.`);
+    updateCreateLock();
+    return;
+  }
+  if(!name){ showErr('⊗ El nombre es obligatorio'); return; }
+  if(!uname){ showErr('⊗ El usuario es obligatorio'); return; }
+  if(uname.length < 3){ showErr('⊗ El usuario debe tener al menos 3 caracteres'); return; }
+  if(!pass){ showErr('⊗ La contraseña es obligatoria'); return; }
+  if(pass.length < 6){ showErr('⊗ La contraseña debe tener al menos 6 caracteres'); return; }
+
+  const exists = vendors.find(v=>v.username===uname);
+  if(exists){ showErr(`⊗ El usuario "${uname}" ya existe`); return; }
+
+  const newId = 'sc_v_'+Date.now();
+  const vendor = {
+    id: newId,
+    username: uname,
+    password: pass,
+    name: name,
+    role: 'admin',
+    colorIdx: selectedColor,
+    createdAt: Date.now(),
+    active: true
+  };
+  const ph = await _sha256(pass + 'sc_salt_2025');
+  const newId = 'v_' + Date.now().toString(36);
+  const vendor = { id:newId, username:uname, passwordHash:ph, name, role:'admin',
+                   colorIdx:selectedColor, createdAt:Date.now(), active:true };
+  const ok = await fbSet('vendors/'+newId, vendor);
+  if(!ok){ showErr('⊗ Error guardando en Firebase'); return; }
+  logAction('create',`Vendedor creado: ${name} (@${uname})`);
+  errEl.style.display='none';
+  await loadVendorsFromServer();
+  updateCapacity(); updateNewBtn();
+  toast('success',`✓ Vendedor "${name}" creado`);
+  clearCreateForm();
+  showPage('vendors');
+}
+
+/* ══════════════════════════════════════
+   EDIT
+══════════════════════════════════════ */
+function openEdit(id){
+  const v = vendors.find(x=>x.id===id);
+  if(!v) return;
+  document.getElementById('e-id').value   = id;
+  document.getElementById('e-name').value = v.name;
+  document.getElementById('e-user').value = v.username;
+  document.getElementById('e-pass').value = '';
+  editSelectedColor = v.colorIdx||0;
+  buildColorPicker('e-color-picker','editSelectedColor',editSelectedColor);
+  const errEl=document.getElementById('edit-error');
+  if(errEl){errEl.style.display='none';errEl.textContent='';}
+  openModal('modal-edit');
+}
+
+function saveEdit(){
+  const id    = document.getElementById('e-id').value;
+  const name  = document.getElementById('e-name').value.trim();
+  const uname = document.getElementById('e-user').value.trim();
+  const pass  = document.getElementById('e-pass').value.trim();
+  const errEl = document.getElementById('edit-error');
+
+  const showErr = msg=>{errEl.textContent=msg;errEl.style.display='block';};
+
+  if(!name){ showErr('⊗ El nombre es obligatorio'); return; }
+  if(!uname){ showErr('⊗ El usuario es obligatorio'); return; }
+  if(uname.length<3){ showErr('⊗ Usuario muy corto (mín. 3)'); return; }
+  if(pass && pass.length<6){ showErr('⊗ Contraseña muy corta (mín. 6)'); return; }
+
+  const dup = vendors.find(v=>v.username===uname && v.id!==id);
+  if(dup){ showErr(`⊗ El usuario "${uname}" ya está en uso`); return; }
+
+  const v = vendors.find(x=>x.id===id);
+  if(!v){ toast('danger','⊗ Vendedor no encontrado'); closeModal('modal-edit'); return; }
+
+  const changes=[];
+  if(v.name!==name)     changes.push(`nombre: ${v.name} → ${name}`);
+  if(v.username!==uname)changes.push(`usuario: ${v.username} → ${uname}`);
+  if(pass)              changes.push('contraseña actualizada');
+
+  const updates = { name, username:uname, colorIdx:editSelectedColor };
+  if(pass){ updates.passwordHash = await _sha256(pass + 'sc_salt_2025'); }
+  const ok = await fbUpdate('vendors/'+id, updates);
+  if(!ok){ showErr('⊗ Error actualizando Firebase'); return; }
+  if(changes.length) logAction('edit',`Vendedor editado: ${name}`);
+  closeModal('modal-edit');
+  await loadVendorsFromServer();
+  toast('success',`✓ Vendedor "${name}" actualizado`);
+}
+
+/* ══════════════════════════════════════
+   TOGGLE ACTIVE
+══════════════════════════════════════ */
+async function toggleVendor(id){
+  const v=vendors.find(x=>x.id===id);
+  if(!v) return;
+  const newActive = v.active===false ? true : false;
+  const ok = await fbUpdate('vendors/'+id, { active: newActive });
+  if(!ok){ toast('danger','⊗ Error en Firebase'); return; }
+  v.active = newActive;
+  logAction('toggle',`Vendedor ${v.active?'activado':'desactivado'}: ${v.name}`);
+  await loadVendorsFromServer();
+  updateNewBtn();
+  toast(v.active?'success':'warn',`${v.active?'✓ Activado':'⊘ Desactivado'}: ${v.name}`);
+}
+
+/* ══════════════════════════════════════
+   DELETE
+══════════════════════════════════════ */
+function confirmDelete(id){
+  const v=vendors.find(x=>x.id===id);
+  if(!v) return;
+  document.getElementById('mc-title').textContent = '⊗ Eliminar vendedor';
+  document.getElementById('mc-body').textContent  = `¿Eliminar a "${v.name}" (@${v.username})? Esta acción es permanente.`;
+  const okBtn = document.getElementById('mc-ok');
+  okBtn.onclick = ()=>{ deleteVendor(id); closeModal('modal-confirm'); };
+  openModal('modal-confirm');
+}
+
+async function deleteVendor(id){
+  const v=vendors.find(x=>x.id===id);
+  if(!v) return;
+  const ok = await fbRemove('vendors/'+id);
+  if(!ok){ toast('danger','⊗ Error en Firebase'); return; }
+  vendors = vendors.filter(x=>x.id!==id);
+  logAction('delete',`Vendedor eliminado: ${v.name} (@${v.username})`);
+  renderVendors();
+  renderExportBox();
+  updateCapacity();
+  updateNewBtn();
+  toast('danger',`⊗ Vendedor "${v.name}" eliminado`);
+}
+
+function confirmResetAllVendors(){
+  document.getElementById('mc-title').textContent = '⚠ Resetear vendedores';
+  document.getElementById('mc-body').textContent  = 'Se restaurarán los 15 vendedores predeterminados. Todos los personalizados se perderán.';
+  const okBtn = document.getElementById('mc-ok');
+  okBtn.onclick = ()=>{
+    // Delete all current vendors from Firebase then re-create defaults
+    const db3 = await initFirebase();
+    if(db3){
+      const snap3 = await db3.ref('vendors').once('value');
+      const cur3  = snap3.val()||{};
+      const del3  = {};
+      Object.keys(cur3).forEach(id=>{ if(cur3[id].role!=='super') del3['vendors/'+id]=null; });
+      const batch3 = {...del3};
+      for(const v of DEFAULT_VENDORS){
+        const dv = {...v, createdAt:Date.now(), passwordHash: await _sha256(v.password+'sc_salt_2025')};
+        delete dv.password;
+        batch3['vendors/'+dv.id] = dv;
+      }
+      await db3.ref().update(batch3);
+    }
+    logAction('delete','Sistema reseteado a vendedores predeterminados');
+    closeModal('modal-confirm');
+    await loadVendorsFromServer();
+    updateCapacity();
+    updateNewBtn();
+    toast('warn','↻ Vendedores reseteados a defaults');
+  };
+  openModal('modal-confirm');
+}
+
+/* ══════════════════════════════════════
+   CREDENTIAL VIEW
+══════════════════════════════════════ */
+function openCred(id){
+  const v=vendors.find(x=>x.id===id);
+  if(!v) return;
+  document.getElementById('mc-cred-name').textContent = v.name;
+  document.getElementById('mc-cred-user').value = v.username;
+  document.getElementById('mc-cred-pass').value = v.password;
+  openModal('modal-cred');
+}
+
+function copyField(inputId){
+  const el=document.getElementById(inputId);
+  if(!el) return;
+  navigator.clipboard.writeText(el.value).then(()=>toast('success','✓ Copiado'));
+}
+
+function copyBothCreds(){
+  const u = document.getElementById('mc-cred-user')?.value||'';
+  const p = document.getElementById('mc-cred-pass')?.value||'';
+  navigator.clipboard.writeText(`Usuario: ${u}\nContraseña: ${p}`).then(()=>toast('success','✓ Usuario + contraseña copiados'));
+}
+
+/* ══════════════════════════════════════
+   EXPORT
+══════════════════════════════════════ */
+function renderExportBox(){
+  const box = document.getElementById('export-box');
+  if(!box) return;
+  const active = vendors.filter(v=>v.active!==false);
+  if(!active.length){
+    box.innerHTML='<span class="dim">Sin vendedores activos</span>';
+    return;
+  }
+  box.innerHTML = active.map((v,i)=>{
+    const n = String(i+1).padStart(2,'0');
+    return `<span class="dim">${n}.</span> <span class="hi">${escHtml(v.name)}</span>\n    Usuario: <span class="ok">${escHtml(v.username)}</span>\n    Pass:    <span class="ok">${escHtml(v.password)}</span>\n`;
+  }).join('\n');
+}
+
+function renderExportSearch(){
+  const q=(document.getElementById('exp-search')?.value||'').toLowerCase();
+  const res=document.getElementById('exp-results');
+  if(!res) return;
+  if(!q){ res.innerHTML=''; return; }
+  const found=vendors.filter(v=>v.name.toLowerCase().includes(q)||v.username.toLowerCase().includes(q));
+  if(!found.length){
+    res.innerHTML=`<div class="empty" style="padding:1rem 0"><span class="empty-icon" style="font-size:1.2rem">◎</span>Sin resultados</div>`;
+    return;
+  }
+  res.innerHTML=found.map(v=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.75rem 0;border-bottom:1px solid var(--border)">
+      <div style="display:flex;align-items:center;gap:.6rem">
+        <div style="${avatarStyle(v.colorIdx)};width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;flex-shrink:0">${initials(v.name)}</div>
+        <div>
+          <div style="font-size:.82rem;font-weight:600">${escHtml(v.name)}</div>
+          <div style="font-family:var(--mono);font-size:.62rem;color:var(--muted)">@${escHtml(v.username)} · ${v.active!==false?'<span style="color:var(--success)">activo</span>':'<span style="color:var(--danger)">inactivo</span>'}</div>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="openCred('${v.id}')">🔑 Ver</button>
+    </div>
+  `).join('');
+}
+
+function copyAllCreds(){
+  const active=vendors.filter(v=>v.active!==false);
+  if(!active.length){ toast('warn','⚠ Sin vendedores activos'); return; }
+  const txt=active.map((v,i)=>`${String(i+1).padStart(2,'0')}. ${v.name}\n    Usuario: ${v.username}\n    Pass:    ${v.password}`).join('\n\n');
+  navigator.clipboard.writeText(txt).then(()=>toast('success',`✓ ${active.length} credenciales copiadas`));
+}
+
+function downloadCreds(){
+  const active=vendors.filter(v=>v.active!==false);
+  if(!active.length){ toast('warn','⚠ Sin vendedores activos'); return; }
+  const txt=`SHADOW CHAMS — CREDENCIALES RESELLER\nGenerado: ${new Date().toLocaleString('es')}\n${'═'.repeat(40)}\n\n`+
+    active.map((v,i)=>`${String(i+1).padStart(2,'0')}. ${v.name}\n    Usuario:     ${v.username}\n    Contraseña: ${v.password}`).join('\n\n');
+  const blob=new Blob([txt],{type:'text/plain'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`shadow-chams-creds-${Date.now()}.txt`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('success','✓ Descarga iniciada');
+}
+
+/* ══════════════════════════════════════
+   SUPER ADMIN PASSWORD CHANGE
+══════════════════════════════════════ */
+async function changeSuperPass(){
+  const curr = document.getElementById('sa-curr')?.value||'';
+  const nw   = document.getElementById('sa-new')?.value||'';
+  const conf = document.getElementById('sa-conf')?.value||'';
+  if(!nw || nw.length<6){ toast('warn','⚠ La nueva contraseña debe tener al menos 6 caracteres'); return; }
+  if(nw !== conf){ toast('warn','⚠ Las contraseñas no coinciden'); return; }
+  // Verify current password
+  const currHash = await _sha256(curr + 'sc_salt_2025');
+  const vendor = await fbGet('vendors/'+session.id);
+  if(!vendor || vendor.passwordHash !== currHash){ toast('danger','⊗ Contraseña actual incorrecta'); return; }
+  const newHash = await _sha256(nw + 'sc_salt_2025');
+  const ok = await fbUpdate('vendors/'+session.id, { passwordHash: newHash });
+  if(!ok){ toast('danger','⊗ Error en Firebase'); return; }
+  toast('success','✓ Contraseña actualizada');
+  ['sa-curr','sa-new','sa-conf'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+}
+
+/* ══════════════════════════════════════
+   ACTIVITY LOG
+══════════════════════════════════════ */
+function logAction(type, text){
+  const entry = {type, text, ts: Date.now()};
+  activityLog.unshift(entry);
+  activityLog = activityLog.slice(0,200);
+  // Write to Firebase async (fire-and-forget)
+  const logId = 'log_' + Date.now().toString(36);
+  fbSet('log/'+logId, entry).catch(()=>{});
+  document.getElementById('sb-badge-log').textContent = activityLog.length;
+}
+
+async function renderLog(){
+  await loadLogFromServer();
+  const list = document.getElementById('log-list');
+  const label = document.getElementById('log-count-label');
+  if(label) label.textContent = `${activityLog.length} entrada${activityLog.length!==1?'s':''}`;
+  if(!activityLog.length){
+    list.innerHTML=`<div class="empty"><span class="empty-icon">◎</span>Sin actividad registrada</div>`;
+    return;
+  }
+  list.innerHTML = activityLog.map(e=>{
+    const time=new Date(e.ts).toLocaleString('es',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+    return `<div class="log-item">
+      <div class="log-dot ${e.type}"></div>
+      <div class="log-text">${escHtml(e.text)}</div>
+      <div class="log-time">${time}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('sb-badge-log').textContent = activityLog.length;
+}
+
+async function clearLog(){
+  const ok = await fbRemove('log');
+  if(!ok){ toast('danger','⊗ Error en Firebase'); return; }
+  activityLog=[];
+  renderLog();
+  toast('success','✓ Historial limpiado');
+}
+
+/* ══════════════════════════════════════
+   MODALS
+══════════════════════════════════════ */
+function openModal(id){
+  const el = document.getElementById(id);
+  el.classList.add('open');
+  // Android: prevent body scroll while modal open
+  document.body.style.overflow='hidden';
+}
+function closeModal(id){
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow='';
+}
+// Click backdrop to close
+document.querySelectorAll('.modal-overlay').forEach(overlay=>{
+  overlay.addEventListener('click', e=>{ if(e.target===overlay){ overlay.classList.remove('open'); document.body.style.overflow=''; } });
+});
+// Swipe down to close modals (Android native feel)
+document.querySelectorAll('.modal-overlay').forEach(overlay=>{
+  const modal = overlay.querySelector('.modal');
+  if(!modal) return;
+  let startY=0, startT=0, dragging=false;
+  modal.addEventListener('touchstart', e=>{
+    startY = e.touches[0].clientY;
+    startT = Date.now();
+    dragging = true;
+    modal.style.transition='none';
+  },{passive:true});
+  modal.addEventListener('touchmove', e=>{
+    if(!dragging) return;
+    const dy = e.touches[0].clientY - startY;
+    if(dy > 0) modal.style.transform = `translateY(${dy}px)`;
+  },{passive:true});
+  modal.addEventListener('touchend', e=>{
+    if(!dragging) return;
+    dragging=false;
+    modal.style.transition='';
+    const dy = e.changedTouches[0].clientY - startY;
+    const dt = Date.now() - startT;
+    // Close if dragged >100px or fast swipe >60px
+    if(dy > 100 || (dy > 60 && dt < 250)){
+      modal.style.transform='';
+      overlay.classList.remove('open');
+      document.body.style.overflow='';
+    } else {
+      modal.style.transform='';
+    }
+  });
+});
+
+/* ══════════════════════════════════════
+   TOAST
+══════════════════════════════════════ */
+function toast(type, msg){
+  const c=document.getElementById('toast-container');
+  const t=document.createElement('div');
+  t.className=`toast ${type}`;
+  t.textContent=msg;
+  c.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300);},3000);
 }
 
 /* ══════════════════════════════════════
    HELPERS
 ══════════════════════════════════════ */
-function randChars(n){
-  const p='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
-  let s=''; for(let i=0;i<n;i++) s+=p[Math.floor(Math.random()*p.length)]; return s;
-}
-function genUsername(){ return 'Shadow-'+randChars(6); }
-function durMs(d,h,m){ return ((d*24+h)*60+m)*60000; }
-function msToStr(ms){ const d=Math.floor(ms/86400000),h=Math.floor((ms%86400000)/3600000),m=Math.floor((ms%3600000)/60000); return `${d}d ${h}h ${m}m`; }
-
-function filterByPeriod(keys, period){
-  const now=Date.now();
-  if(period==='today'){ const s=new Date(); s.setHours(0,0,0,0); return keys.filter(k=>k.created>=s.getTime()); }
-  if(period==='week') { return keys.filter(k=>now-k.created<=7*86400000); }
-  if(period==='month'){ return keys.filter(k=>now-k.created<=30*86400000); }
-  return keys;
-}
-
-function initials(name){ return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); }
-
-/* ══════════════════════════════════════
-   GENERATE
-══════════════════════════════════════ */
-function quickGenerate(){
-  const days = parseInt(document.getElementById('quick-type').value);
-  const qty  = Math.min(50, parseInt(document.getElementById('quick-qty').value)||1);
-  generateBatch(qty, durMs(days,0,0), `${days}d`);
-}
-
-function customGenerate(){
-  // Doble verificación: solo el admin principal puede generar keys personalizadas
-  if(session?.role !== 'super'){ toast('danger','⊗ Solo el admin principal puede generar keys personalizadas'); return; }
-  const d=parseInt(document.getElementById('c-days').value)||0;
-  const h=parseInt(document.getElementById('c-hours').value)||0;
-  const m=parseInt(document.getElementById('c-mins').value)||0;
-  const qty=Math.min(50, parseInt(document.getElementById('custom-qty').value)||1);
-  if(durMs(d,h,m)<=0){ toast('warn','⚠ Define una duración mayor a 0'); return; }
-  generateBatch(qty, durMs(d,h,m), `${d}d ${h}h ${m}m`);
-}
-
-async function generateBatch(qty, ms, label){
-  const db = await initFirebase();
-  if(!db){ showNetError(); return; }
-  const now = Date.now();
-  const batch = {};
-  const created = [];
-  for(let i=0;i<qty;i++){
-    const id  = _fbid();
-    const key = _genKey();
-    const rec = {
-      id, key,
-      username:  genUsername(),
-      status:    'inactive',      // timer NOT running yet
-      hwid:      null,
-      activatedAt: null,          // set on first use by the mod
-      durationMs:  ms,
-      typeLabel:   label,
-      ownerId:     session.id,
-      ownerName:   session.name,
-      ownerColorIdx: session.colorIdx,
-      createdAt:   now
-    };
-    batch[id] = rec;
-    created.push(rec);
-  }
-  await db.ref('keys').update(batch);
-  allKeys.push(...created);
-  toast('success',`✓ ${qty} key${qty>1?'s':''} generada${qty>1?'s':''} — ${label}`);
-  updateMyStats();
-  renderDashRankMini();
-  if(window.matchMedia('(max-width:767px)').matches) showPage('mis-keys');
-  else { renderMyKeys(); renderRanking(); updateRankStats(); }
-}
-
-function _fbid(){
-  return Array.from(crypto.getRandomValues(new Uint8Array(8)))
-    .map(b=>b.toString(16).padStart(2,'0')).join('');
-}
-
-function _genKey(){
-  const h=()=>Array.from(crypto.getRandomValues(new Uint8Array(3)))
-    .map(b=>b.toString(16).padStart(2,'0')).join('').toUpperCase();
-  return \`SC\${h()}-\${h()}-\${h()}-\${h()}\`;
-}
-
-/* ══════════════════════════════════════
-   STATS — MIS KEYS
-══════════════════════════════════════ */
-function myKeys(){ return allKeys.filter(k=>k.ownerId===session.id); }
-
-function updateMyStats(){
-  const now=Date.now();
-  const mk=myKeys();
-  const active=mk.filter(k=>keyIsAlive(k)&&k.status!=='inactive').length;
-  const today_=new Date(); today_.setHours(0,0,0,0);
-  const todayK=mk.filter(k=>k.created>=today_.getTime()).length;
-  document.getElementById('my-total').textContent   = mk.length;
-  document.getElementById('my-active').textContent  = active;
-  document.getElementById('my-expired').textContent = mk.length-active;
-  document.getElementById('my-today').textContent   = todayK;
-  document.getElementById('mis-keys-sub').textContent = `shadow-chams // ${mk.length} keys generadas`;
-}
-
-/* ══════════════════════════════════════
-   DASHBOARD
-══════════════════════════════════════ */
-function refreshDash(){
-  const now=Date.now();
-  const mk=myKeys();
-  const active=mk.filter(k=>keyIsAlive(k)&&k.status!=='inactive').length;
-  const today_=new Date(); today_.setHours(0,0,0,0);
-  const todayK=mk.filter(k=>k.created>=today_.getTime()).length;
-  document.getElementById('dash-greeting').textContent=`Hola, ${session.name.split(' ')[0]} 👋`;
-  document.getElementById('dash-sub').textContent=`shadow-chams // ${mk.length} keys en total`;
-  document.getElementById('my-total').textContent   = mk.length;
-  document.getElementById('my-active').textContent  = active;
-  document.getElementById('my-expired').textContent = mk.length-active;
-  document.getElementById('my-today').textContent   = todayK;
-  renderDashRecent();
-  renderDashRankMini();
-}
-
-function renderDashRecent(){
-  const el=document.getElementById('dash-recent');
-  const now=Date.now();
-  const recent=[...myKeys()].sort((a,b)=>b.created-a.created).slice(0,5);
-  if(!recent.length){ el.innerHTML='<div class="empty"><span class="empty-icon">◎</span>Aún no has generado keys</div>'; return; }
-  el.innerHTML=recent.map(u=>{
-    const alive=u.expire>now;
-    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:.55rem 0;border-bottom:1px solid var(--border)">
-      <div>
-        <div style="font-family:var(--mono);font-size:.82rem;font-weight:600;color:var(--accent)">${u.username}</div>
-        <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);margin-top:1px">${new Date(u.created).toLocaleDateString('es')}</div>
-      </div>
-      ${makeBadge(u,alive)}
-    </div>`;
-  }).join('')+'<div style="height:.1rem"></div>';
-}
-
-function renderDashRankMini(){
-  const el=document.getElementById('dash-rank-mini');
-  const scores=calcScores('all');
-  const top=scores.slice(0,3);
-  if(!top.length){ el.innerHTML='<div class="empty"><span class="empty-icon">▲</span>Sin datos</div>'; return; }
-  const max=top[0].count||1;
-  el.innerHTML=top.map((s,i)=>{
-    const rankClass=['gold','silver','bronze'][i]||'';
-    const pct=Math.round(s.count/max*100);
-    const isMe=s.id===session.id;
-    return `<div style="display:flex;align-items:center;gap:.65rem;padding:.5rem 0;border-bottom:1px solid var(--border)">
-      <span class="lb-rank ${rankClass}">${i+1}</span>
-      <div style="${avatarStyle(s.colorIdx)};width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0">${initials(s.name)}</div>
-      <div style="flex:1;min-width:0">
-        <div style="font-size:.78rem;font-weight:600${isMe?';color:var(--accent)':''}">${s.name}${isMe?' (tú)':''}</div>
-        <div class="lb-bar-wrap" style="margin-top:.3rem"><div class="lb-bar" style="width:${pct}%"></div></div>
-      </div>
-      <div style="font-family:var(--mono);font-size:.88rem;font-weight:700;color:var(--accent)">${s.count}</div>
-    </div>`;
-  }).join('');
-}
-
-/* ══════════════════════════════════════
-   RENDER MIS KEYS
-══════════════════════════════════════ */
-function renderMyKeys(){
-  const now=Date.now();
-  const q=(document.getElementById('my-search')?.value||'').toLowerCase();
-  let list=[...myKeys()].sort((a,b)=>b.created-a.created);
-  if(q) list=list.filter(k=>k.username.toLowerCase().includes(q));
-  if(myFilter==='active')  list=list.filter(k=>keyIsAlive(k)&&k.status!=='inactive');
-  if(myFilter==='expired') list=list.filter(k=>!keyIsAlive(k)||k.status==='expired');
-  const isDesktop=window.matchMedia('(min-width:768px)').matches;
-
-  // mobile cards
-  const cards=document.getElementById('my-key-cards');
-  if(cards){
-    cards.innerHTML = list.length ? list.map((u,i)=>keyCard(u,i,now,false)).join('') :
-      `<div class="empty"><span class="empty-icon">◎</span>ninguna key encontrada</div>`;
-  }
-  // desktop table
-  const tbody=document.getElementById('my-dt-tbody');
-  if(tbody){
-    tbody.innerHTML = list.length ? list.map((u,i)=>keyRow(u,i,now,false)).join('') :
-      `<tr><td colspan="6"><div class="empty">ninguna key encontrada</div></td></tr>`;
-  }
-}
-
-/* ══════════════════════════════════════
-   RENDER TODAS LAS KEYS (super)
-══════════════════════════════════════ */
-function renderAllKeys(){
-  const now=Date.now();
-  const q=(document.getElementById('all-search')?.value||'').toLowerCase();
-  let list=[...allKeys].sort((a,b)=>b.created-a.created);
-  if(q) list=list.filter(k=>k.username.toLowerCase().includes(q)||k.ownerName?.toLowerCase().includes(q));
-  if(allFilter==='active')  list=list.filter(k=>keyIsAlive(k)&&k.status!=='inactive');
-  if(allFilter==='expired') list=list.filter(k=>k.status==='expired'||(!keyIsAlive(k)&&k.status!=='inactive'));
-
-  const cards=document.getElementById('all-key-cards');
-  if(cards){
-    cards.innerHTML = list.length ? list.map((u,i)=>keyCard(u,i,now,true)).join('') :
-      `<div class="empty"><span class="empty-icon">◎</span>ninguna key encontrada</div>`;
-  }
-  const tbody=document.getElementById('all-dt-tbody');
-  if(tbody){
-    tbody.innerHTML = list.length ? list.map((u,i)=>keyRow(u,i,now,true)).join('') :
-      `<tr><td colspan="7"><div class="empty">ninguna key encontrada</div></td></tr>`;
-  }
-}
-
-/* ── KEY CARD (móvil) ── */
-function keyCard(u, i, now, showOwner){
-  const alive=keyIsAlive(u);
-  const expAt=keyExpireMs(u);
-  const remaining=Math.max(0,expAt-Date.now());
-  const expDate=expAt===Infinity?'—':new Date(expAt).toLocaleDateString('es',{day:'2-digit',month:'short',year:'numeric'});
-  const badge=makeBadge(u,alive);
-  const cdHTML=alive?makeCD(u.id,remaining):`<span style="color:var(--danger);font-family:var(--mono);font-size:.68rem">— expirado —</span>`;
-  const hwidBadge=u.hwid
-    ?`<span style="font-family:var(--mono);font-size:.55rem;padding:2px 6px;border-radius:4px;background:rgba(252,192,92,.1);border:1px solid rgba(252,192,92,.3);color:var(--warn)">🔒 HWID</span>`
-    :`<span style="font-family:var(--mono);font-size:.55rem;padding:2px 6px;border-radius:4px;background:rgba(92,252,154,.1);border:1px solid rgba(92,252,154,.3);color:var(--success)">○ Libre</span>`;
-  const ownerHTML = showOwner ? `
-    <div class="user-card-by">
-      <div class="mini-avatar" style="${avatarStyle(u.ownerColorIdx||0)}">${initials(u.ownerName||'?')}</div>
-      ${u.ownerName||'—'}
-    </div>` : '';
-  const canEdit = session.role==='super' || u.ownerId===session.id;
-  const canAddTime = session.role==='super' || u.ownerId===session.id;
-  const superTimeBtn = canAddTime
-    ?`<button class="btn btn-warn btn-xs" onclick="openAddTimeModal('${u.id}')" title="Añadir tiempo">⊕</button>`:'';
-  return `<div class="user-card">
-    <div class="user-card-top">
-      <span class="user-card-name">${u.username}</span>
-      <div style="display:flex;align-items:center;gap:.4rem">
-        ${ownerHTML}
-        <span style="font-family:var(--mono);font-size:.6rem;color:var(--muted)">#${i+1}</span>
-      </div>
-    </div>
-    <div class="user-card-mid">${badge}${hwidBadge}${cdHTML}</div>
-    <div class="user-card-bottom">
-      <span class="user-card-exp">Exp: ${expDate}</span>
-      ${canEdit?`<div class="user-card-actions">
-        <button class="btn btn-success btn-sm" onclick="resetKey('${u.id}')">↻</button>
-        ${superTimeBtn}
-        <button class="btn btn-danger btn-sm" onclick="confirmDeleteKey('${u.id}','${u.username}')">⊗</button>
-      </div>`:''}
-    </div>
-  </div>`;
-}
-
-/* ── KEY ROW (desktop table) ── */
-function keyRow(u, i, now, showOwner){
-  const alive=keyIsAlive(u);
-  const expAt=keyExpireMs(u);
-  const remaining=Math.max(0,expAt-Date.now());
-  const expDate=expAt===Infinity?'—':new Date(expAt).toLocaleDateString('es',{day:'2-digit',month:'short',year:'numeric'});
-  const expTime=new Date(u.expire).toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});
-  const badge=makeBadge(u,alive);
-  const cdHTML=alive?makeCD(u.id,remaining):`<span style="color:var(--danger);font-family:var(--mono);font-size:.68rem">— expirado —</span>`;
-  const ownerCell = showOwner ? `<td>
-    <div style="display:flex;align-items:center;gap:.4rem">
-      <div style="${avatarStyle(u.ownerColorIdx||0)};width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.5rem;font-weight:700;flex-shrink:0">${initials(u.ownerName||'?')}</div>
-      <span style="font-family:var(--mono);font-size:.72rem">${u.ownerName||'—'}</span>
-    </div></td>` : '';
-  const canEdit = session.role==='super' || u.ownerId===session.id;
-  const canAddTime = session.role==='super' || u.ownerId===session.id;
-  return `<tr>
-    <td class="td-id">${i+1}</td>
-    <td class="td-user">${u.username}</td>
-    ${ownerCell}
-    <td>${badge}</td>
-    <td>${cdHTML}</td>
-    <td style="font-family:var(--mono);font-size:.68rem;color:var(--muted)">${expDate} ${expTime}</td>
-    <td>${canEdit?`<div class="row-actions">
-      <button class="btn btn-success btn-sm" onclick="resetKey('${u.id}')">↻</button>
-      ${canAddTime?`<button class="btn btn-warn btn-xs" onclick="openAddTimeModal('${u.id}')" title="Añadir tiempo">⊕</button>`:''}
-      <button class="btn btn-danger btn-sm" onclick="confirmDeleteKey('${u.id}','${u.username}')">⊗</button>
-    </div>`:'<span style="color:var(--muted);font-size:.68rem;font-family:var(--mono)">—</span>'}</td>
-  </tr>`;
-}
-
-/* ══════════════════════════════════════
-   BADGE / COUNTDOWN
-══════════════════════════════════════ */
-function keyExpireMs(u){
-  if(u.status==='inactive'||!u.activatedAt) return Infinity;
-  return (u.activatedAt||0) + (u.durationMs||0);
-}
-function keyIsAlive(u){
-  if(u.status==='expired') return false;
-  if(u.status==='inactive') return true;
-  return keyExpireMs(u) > Date.now();
-}
-function makeBadge(u, alive){
-  if(u.status==='inactive')
-    return `<span class="badge" style="background:rgba(124,92,252,.12);color:var(--accent);border:1px solid rgba(124,92,252,.3)"><span class="badge-dot" style="background:var(--accent)"></span>Sin activar</span>`;
-  if(!alive)
-    return `<span class="badge badge-expired"><span class="badge-dot"></span>Expirado</span>`;
-  if(u.typeLabel==='15d') return `<span class="badge badge-15"><span class="badge-dot"></span>15 Días</span>`;
-  if(u.typeLabel==='30d') return `<span class="badge badge-30"><span class="badge-dot"></span>30 Días</span>`;
-  return `<span class="badge badge-custom"><span class="badge-dot"></span>${u.typeLabel}</span>`;
-}
-function makeCD(id, remaining){
-  const d=Math.floor(remaining/86400000),h=Math.floor((remaining%86400000)/3600000),m=Math.floor((remaining%3600000)/60000),s=Math.floor((remaining%60000)/1000);
-  return `<div class="countdown">
-    <div class="cd-part"><div class="cd-val" id="cd-d-${id}">${String(d).padStart(2,'0')}</div><div class="cd-label">d</div></div>
-    <span class="cd-sep">:</span>
-    <div class="cd-part"><div class="cd-val" id="cd-h-${id}">${String(h).padStart(2,'0')}</div><div class="cd-label">h</div></div>
-    <span class="cd-sep">:</span>
-    <div class="cd-part"><div class="cd-val" id="cd-m-${id}">${String(m).padStart(2,'0')}</div><div class="cd-label">m</div></div>
-    <span class="cd-sep">:</span>
-    <div class="cd-part"><div class="cd-val" id="cd-s-${id}">${String(s).padStart(2,'0')}</div><div class="cd-label">s</div></div>
-  </div>`;
-}
-
-/* ══════════════════════════════════════
-   TICK
-══════════════════════════════════════ */
-function startTick(){
-  clearInterval(tickInterval);
-  tickInterval=setInterval(()=>{
-    const now=Date.now();
-    allKeys.forEach(u=>{
-      const _expAt=keyExpireMs(u); const r=u.status==='inactive'?0:Math.max(0,_expAt-now);
-      const d=Math.floor(r/86400000),h=Math.floor((r%86400000)/3600000),m=Math.floor((r%3600000)/60000),s=Math.floor((r%60000)/1000);
-      const el=id=>document.getElementById(id);
-      if(el(`cd-d-${u.id}`)) el(`cd-d-${u.id}`).textContent=String(d).padStart(2,'0');
-      if(el(`cd-h-${u.id}`)) el(`cd-h-${u.id}`).textContent=String(h).padStart(2,'0');
-      if(el(`cd-m-${u.id}`)) el(`cd-m-${u.id}`).textContent=String(m).padStart(2,'0');
-      if(el(`cd-s-${u.id}`)) el(`cd-s-${u.id}`).textContent=String(s).padStart(2,'0');
-    });
-  }, 1000);
-}
-
-/* ══════════════════════════════════════
-   RESET / DELETE KEYS
-══════════════════════════════════════ */
-async function resetKey(id){
-  const u = allKeys.find(k=>k.id===id);
-  if(!u) return;
-  const updates = { hwid:null, activatedAt:null, status:'inactive' };
-  const ok = await fbUpdate('keys/'+id, updates);
-  if(!ok){ showNetError(); return; }
-  Object.assign(u, updates);
-  renderMyKeys(); renderAllKeys();
-  toast('success',`↻ ${u.username} reseteada — timer reinicia en próximo uso`);
-}
-
-async function deleteKey(id){
-  const ok = await fbRemove('keys/'+id);
-  if(!ok){ showNetError(); return; }
-  allKeys=allKeys.filter(k=>k.id!==id);
-  renderMyKeys(); renderAllKeys(); updateMyStats(); renderRanking(); updateRankStats();
-  toast('danger','⊗ Key eliminada');
-}
-
-function confirmDeleteKey(id, username){
-  openModal('Eliminar Key',`¿Eliminar "${username}"? No se puede deshacer.`,'deleteKey',id);
-}
-
-/* my delete/reset all */
-function confirmMyResetAll(){
-  const mk=myKeys();
-  if(!mk.length){ toast('warn','⚠ No tienes keys'); return; }
-  openModal('Resetear mis keys',`¿Resetear las ${mk.length} keys desde ahora?`,'resetMyAll',null);
-}
-function confirmMyDeleteAll(){
-  const mk=myKeys();
-  if(!mk.length){ toast('warn','⚠ No tienes keys'); return; }
-  openModal('Borrar mis keys',`¿Eliminar tus ${mk.length} keys? No se puede deshacer.`,'deleteMyAll',null);
-}
-function resetMyAll(){
-  const now=Date.now();
-  const mine=myKeys();
-  const db2=await initFirebase(); if(!db2) return;
-  const batch2={};
-  mine.forEach(u=>{
-    batch2['keys/'+u.id+'/hwid']=null;
-    batch2['keys/'+u.id+'/activatedAt']=null;
-    batch2['keys/'+u.id+'/status']='inactive';
-    u.hwid=null; u.activatedAt=null; u.status='inactive';
-  });
-  await db2.ref().update(batch2);
-  renderMyKeys(); updateMyStats();
-  toast('success',`↻ ${mine.length} keys reseteadas — timer reinicia en próximo uso`);
-}
-function deleteMyAll(){
-  allKeys=allKeys.filter(k=>k.ownerId!==session.id);
-  saveStorage(); renderMyKeys(); updateMyStats(); renderRanking(); updateRankStats();
-  toast('danger','⊗ Todas tus keys eliminadas');
-}
-
-/* ══════════════════════════════════════
-   RANKING
-══════════════════════════════════════ */
-function calcScores(period){
-  const keys=filterByPeriod(allKeys,period);
-  const map={};
-  admins.forEach(a=>{ map[a.id]={id:a.id,name:a.name,username:a.username,colorIdx:a.colorIdx,count:0,active:0}; });
-  const now=Date.now();
-  keys.forEach(k=>{
-    if(map[k.ownerId]){
-      map[k.ownerId].count++;
-      if(k.expire>now) map[k.ownerId].active++;
-    }
-  });
-  // Sort: by count desc, then by name; always include everyone (even 0 keys)
-  return Object.values(map).filter(s=>s.id!=='super').sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name));
-}
-
-function updateRankStats(){
-  const now=Date.now();
-  const keys=filterByPeriod(allKeys,rankFilter);
-  const active=keys.filter(k=>k.expire>now).length;
-  document.getElementById('rank-total').textContent   = keys.length;
-  document.getElementById('rank-active').textContent  = active;
-  document.getElementById('rank-expired').textContent = keys.length-active;
-  const sellersCount = admins.filter(a=>a.role!=='super').length;
-  document.getElementById('rank-sellers').textContent = sellersCount;
-}
-
-function renderRanking(){
-  const scores=calcScores(rankFilter);
-  const max=scores[0]?.count||1;
-  const el=document.getElementById('leaderboard');
-  if(!scores.length){
-    el.innerHTML='<div class="empty"><span class="empty-icon">▲</span>Sin datos todavía</div>';
-  } else {
-    el.innerHTML=scores.map((s,i)=>{
-      const pct=Math.round(s.count/max*100);
-      const isMe=s.id===session.id;
-      const rankClass=i===0?'gold':i===1?'silver':i===2?'bronze':'';
-      return `<div class="lb-row${isMe?' me':''}">
-        <div class="lb-rank ${rankClass}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
-        <div class="lb-avatar" style="${avatarStyle(s.colorIdx)}">${initials(s.name)}</div>
-        <div class="lb-info">
-          <div class="lb-name">${s.name}${isMe?'<span>(tú)</span>':''}</div>
-          <div class="lb-bar-wrap"><div class="lb-bar" style="width:${pct}%"></div></div>
-          <div class="lb-sub">${s.active} activas · ${s.count} total</div>
-        </div>
-        <div class="lb-count">
-          <div class="lb-count-val">${s.count}</div>
-          <div class="lb-count-label">keys</div>
-        </div>
-      </div>`;
-    }).join('');
-  }
-  renderSellersTable(scores);
-}
-
-function renderSellersTable(scores){
-  const tbody = document.getElementById('sellers-tbody');
-  if(!tbody) return;
-  const now = Date.now();
-  const today = new Date(); today.setHours(0,0,0,0);
-  // Build per-seller today count
-  const todayMap = {};
-  allKeys.forEach(k=>{
-    if(k.created >= today.getTime()){
-      todayMap[k.ownerId] = (todayMap[k.ownerId]||0)+1;
-    }
-  });
-  // Sort by total (scores already sorted)
-  const sub = document.getElementById('sellers-table-sub');
-  if(sub) sub.textContent = `${scores.length} vendedores`;
-  if(!scores.length){
-    tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--muted);font-family:var(--mono);font-size:.7rem;padding:1rem">Sin vendedores</td></tr>';
-    return;
-  }
-  tbody.innerHTML = scores.map((s,i)=>{
-    const isMe = s.id===session.id;
-    const expired = s.count - s.active;
-    const todayN = todayMap[s.id]||0;
-    const vendorObj = admins.find(a=>a.id===s.id);
-    const user = vendorObj?.username||'—';
-    const rankIcon = i===0?'🥇':i===1?'🥈':i===2?'🥉':`<span style="color:var(--muted)">${i+1}</span>`;
-    return `<tr${isMe?' class="me-row"':''}>
-      <td style="font-family:var(--mono);font-size:.7rem;text-align:center">${rankIcon}</td>
-      <td>
-        <div class="seller-name-cell">
-          <div class="seller-mini-av" style="${avatarStyle(s.colorIdx)}">${initials(s.name)}</div>
-          <span style="font-weight:600;font-size:.8rem">${s.name}${isMe?' <span style="font-family:var(--mono);font-size:.58rem;color:var(--accent)">(tú)</span>':''}</span>
-        </div>
-      </td>
-      <td style="font-family:var(--mono);font-size:.7rem;color:var(--muted)">@${user}</td>
-      <td style="font-family:var(--mono);font-weight:700;color:var(--accent)">${s.count}</td>
-      <td style="font-family:var(--mono);color:var(--success)">${s.active}</td>
-      <td style="font-family:var(--mono);color:var(--danger)">${expired}</td>
-      <td style="font-family:var(--mono);color:var(--warn)">${todayN}</td>
-    </tr>`;
-  }).join('');
-}
-
-/* ══════════════════════════════════════
-   PERFIL
-══════════════════════════════════════ */
-function renderPerfil(){
-  const ini=initials(session.name);
-  const av=document.getElementById('perfil-avatar');
-  av.textContent=ini;
-  av.setAttribute('style',avatarStyle(session.colorIdx)+';width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;flex-shrink:0');
-  document.getElementById('perfil-name').textContent=session.name;
-  document.getElementById('perfil-user').textContent='@'+session.username;
-  const rb=document.getElementById('perfil-role-badge');
-  if(session.role==='super'){ rb.innerHTML='<span class="role-badge role-super">SUPER ADMIN</span>'; }
-  else { rb.innerHTML='<span class="role-badge role-admin">RESELLER</span>'; }
-}
-
-function changePassword(){
-  const np=document.getElementById('new-pass').value;
-  const cp=document.getElementById('confirm-pass').value;
-  if(!np||np.length<4){ toast('warn','⚠ La contraseña debe tener al menos 4 caracteres'); return; }
-  if(np!==cp){ toast('warn','⚠ Las contraseñas no coinciden'); return; }
-  const admin=admins.find(a=>a.id===session.id);
-  if(!admin){ toast('danger','⊗ Error al encontrar cuenta'); return; }
-  admin.password=np;
-  saveStorage();
-  document.getElementById('new-pass').value='';
-  document.getElementById('confirm-pass').value='';
-  toast('success','✓ Contraseña actualizada');
-}
-
-/* ══════════════════════════════════════
-   ADMINS (super admin)
-══════════════════════════════════════ */
-function renderAdmins(){
-  renderCredsGrid();
-  const el=document.getElementById('admin-list');
-  const list=admins.filter(a=>a.role!=='super');
-  if(!list.length){ el.innerHTML='<div class="empty"><span class="empty-icon">👥</span>Sin admins creados</div>'; return; }
-  const now=Date.now();
-  el.innerHTML=list.map(a=>{
-    const keys=allKeys.filter(k=>k.ownerId===a.id);
-    const active=keys.filter(k=>k.expire>now).length;
-    return `<div class="admin-row">
-      <div class="admin-avatar" style="${avatarStyle(a.colorIdx)}">${initials(a.name)}</div>
-      <div class="admin-info">
-        <div class="admin-name">${a.name}</div>
-        <div class="admin-meta">@${a.username} · <span style="color:var(--accent)">${keys.length}</span> keys generadas · <span style="color:var(--success)">${active}</span> activas</div>
-      </div>
-      <div class="admin-actions">
-        <button class="btn btn-ghost btn-xs" onclick="openEditAdmin('${a.id}')">✏</button>
-        <button class="btn btn-danger btn-xs" onclick="confirmDeleteAdmin('${a.id}','${a.name}')">⊗</button>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function renderCredsGrid(){
-  const grid = document.getElementById('creds-grid');
-  if(!grid) return;
-  const now = Date.now();
-  const list = admins.filter(a=>a.role!=='super');
-  if(!list.length){ grid.innerHTML='<div style="color:var(--muted);font-family:var(--mono);font-size:.7rem">Sin vendedores</div>'; return; }
-  grid.innerHTML = list.map((a,i)=>{
-    const keyCount = allKeys.filter(k=>k.ownerId===a.id).length;
-    const active   = allKeys.filter(k=>k.ownerId===a.id && k.expire>now).length;
-    return `<div class="cred-card">
-      <div class="cred-num">#${String(i+1).padStart(2,'0')} · ${a.name}</div>
-      <div class="cred-user">👤 ${a.username}</div>
-      <div class="cred-pass">🔒 ${a.password}</div>
-      <div class="cred-keys">🔑 ${keyCount} keys · ${active} activas</div>
-    </div>`;
-  }).join('');
-}
-
-function copyCreds(){
-  const list = admins.filter(a=>a.role!=='super');
-  const now = Date.now();
-  const text = list.map((a,i)=>{
-    const keyCount = allKeys.filter(k=>k.ownerId===a.id).length;
-    return `#${String(i+1).padStart(2,'0')} ${a.name}\n  usuario: ${a.username}\n  pass:    ${a.password}\n  keys:    ${keyCount}`;
-  }).join('\n\n');
-  navigator.clipboard.writeText(text).then(()=>toast('success','✓ Credenciales copiadas')).catch(()=>toast('warn','⚠ No se pudo copiar'));
-}
-
-function openAddAdmin(){
-  document.getElementById('aa-name').value='';
-  document.getElementById('aa-user').value='';
-  document.getElementById('aa-pass').value='';
-  document.getElementById('add-admin-modal').classList.add('open');
-}
-function closeAddAdmin(){ document.getElementById('add-admin-modal').classList.remove('open'); }
-
-function addAdmin(){
-  const name=document.getElementById('aa-name').value.trim();
-  const user=document.getElementById('aa-user').value.trim().replace(/\s+/g,'_');
-  const pass=document.getElementById('aa-pass').value;
-  if(!name||!user||!pass){ toast('warn','⚠ Completa todos los campos'); return; }
-  if(admins.find(a=>a.username===user)){ toast('warn','⚠ El usuario ya existe'); return; }
-  const colorIdx=admins.filter(a=>a.role!=='super').length % AVATAR_COLORS.length;
-  admins.push({ id:randChars(10), username:user, password:pass, name:name, role:'admin', colorIdx:colorIdx, createdAt:Date.now() });
-  saveStorage(); renderAdmins(); closeAddAdmin();
-  toast('success',`✓ Admin "${name}" creado`);
-}
-
-function openEditAdmin(id){
-  const a=admins.find(x=>x.id===id);
-  if(!a) return;
-  document.getElementById('ea-id').value=id;
-  document.getElementById('ea-name').value=a.name;
-  document.getElementById('ea-pass').value='';
-  document.getElementById('edit-admin-modal').classList.add('open');
-}
-function closeEditAdmin(){ document.getElementById('edit-admin-modal').classList.remove('open'); }
-
-function saveEditAdmin(){
-  const id=document.getElementById('ea-id').value;
-  const a=admins.find(x=>x.id===id);
-  if(!a) return;
-  const name=document.getElementById('ea-name').value.trim();
-  const pass=document.getElementById('ea-pass').value;
-  if(!name){ toast('warn','⚠ El nombre no puede estar vacío'); return; }
-  a.name=name;
-  if(pass) a.password=pass;
-  saveStorage(); renderAdmins(); closeEditAdmin();
-  toast('success',`✓ Admin actualizado`);
-}
-
-function confirmDeleteAdmin(id, name){
-  openModal('Eliminar Admin',`¿Eliminar a "${name}"? Sus keys quedarán sin propietario.`,'deleteAdmin',id);
-}
-function deleteAdmin(id){
-  admins=admins.filter(a=>a.id!==id);
-  saveStorage(); renderAdmins();
-  toast('danger','⊗ Admin eliminado');
-}
-
-/* ══════════════════════════════════════
-   MODAL
-══════════════════════════════════════ */
-function openModal(title,body,action,target){
-  document.getElementById('modal-title').textContent=title;
-  document.getElementById('modal-body').textContent=body;
-  modalAction=action; modalTarget=target;
-  document.getElementById('modal-overlay').classList.add('open');
-}
-function closeModal(){ document.getElementById('modal-overlay').classList.remove('open'); modalAction=null; modalTarget=null; }
-function modalConfirm(){
-  if(modalAction==='deleteKey')   deleteKey(modalTarget);
-  if(modalAction==='deleteMyAll') deleteMyAll();
-  if(modalAction==='resetMyAll')  resetMyAll();
-  if(modalAction==='deleteAdmin') deleteAdmin(modalTarget);
-  closeModal();
-}
-document.getElementById('modal-overlay').addEventListener('click',function(e){ if(e.target===this) closeModal(); });
-document.getElementById('add-admin-modal').addEventListener('click',function(e){ if(e.target===this) closeAddAdmin(); });
-document.getElementById('edit-admin-modal').addEventListener('click',function(e){ if(e.target===this) closeEditAdmin(); });
-document.getElementById('add-time-modal').addEventListener('click',function(e){ if(e.target===this) closeAddTimeModal(); });
-
-/* ══════════════════════════════════════
-   TOAST
-══════════════════════════════════════ */
-function toast(type,msg){
-  const c=document.getElementById('toast-container');
-  const t=document.createElement('div'); t.className=`toast ${type}`; t.textContent=msg;
-  c.appendChild(t);
-  setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(()=>t.remove(),300); }, 2800);
-}
-
-/* ══════════════════════════════════════
-   LIVE PREVIEWS
-══════════════════════════════════════ */
-function updateQuickPreview(){
-  const qt=document.getElementById('quick-type');
-  document.getElementById('preview-expire').textContent=qt.value+'d';
-  document.getElementById('preview-user').textContent='Shadow-'+randChars(6);
-}
-function updateCustomPreview(){
-  const dEl=document.getElementById('c-days');
-  const hEl=document.getElementById('c-hours');
-  const mEl=document.getElementById('c-mins');
-  const prev=document.getElementById('custom-preview');
-  if(!dEl||!hEl||!mEl||!prev) return;
-  const d=parseInt(dEl.value)||0;
-  const h=parseInt(hEl.value)||0;
-  const m=parseInt(mEl.value)||0;
-  prev.textContent=`${d}d ${h}h ${m}m`;
-}
-
-/* ══════════════════════════════════════
-   ADD TIME — SUPER ADMIN
-══════════════════════════════════════ */
-function openAddTimeModal(keyId){
-  const u = allKeys.find(k=>k.id===keyId);
-  // Vendedor solo puede añadir tiempo a sus propias keys
-  if(session?.role!=='super' && u?.ownerId !== session?.id){
-    toast('danger','⊗ Sin permiso para esta key'); return;
-  }
-  addTimeTarget = keyId;
-  const nameEl = document.getElementById('at-key-name');
-  if(nameEl) nameEl.textContent = u ? u.username : '—';
-  const f = id => { const el=document.getElementById(id); if(el) el.value=0; };
-  f('at-days'); f('at-hours'); f('at-mins');
-  document.getElementById('add-time-modal').classList.add('open');
-}
-
-function closeAddTimeModal(){
-  document.getElementById('add-time-modal').classList.remove('open');
-  addTimeTarget = null;
-}
-
-async function confirmAddTime(){
-  const d = parseInt(document.getElementById('at-days').value)||0;
-  const h = parseInt(document.getElementById('at-hours').value)||0;
-  const m = parseInt(document.getElementById('at-mins').value)||0;
-  const ms = durMs(d,h,m);
-  if(ms <= 0){ toast('warn','⚠ Define una duración mayor a 0'); return; }
-  if(!addTimeTarget){ closeAddTimeModal(); return; }
-  const u = allKeys.find(k=>k.id===addTimeTarget);
-  if(!u){ closeAddTimeModal(); return; }
-  // Add to durationMs (works whether active or inactive)
-  const newDuration = (u.durationMs||0) + ms;
-  const ok = await fbUpdate('keys/'+addTimeTarget, { durationMs: newDuration });
-  if(!ok){ showNetError(); closeAddTimeModal(); return; }
-  u.durationMs = newDuration;
-  renderMyKeys(); renderAllKeys(); updateMyStats();
-  toast('success',`✓ +${msToStr(ms)} añadido a ${u.username}`);
-  closeAddTimeModal();
-}
-
-async function addTimeMyBulk(){
-  const d = parseInt(document.getElementById('my-bulk-days').value)||0;
-  const h = parseInt(document.getElementById('my-bulk-hours').value)||0;
-  const m = parseInt(document.getElementById('my-bulk-mins').value)||0;
-  const ms = durMs(d,h,m);
-  if(ms <= 0){ toast('warn','⚠ Define una duración mayor a 0'); return; }
-  const r = await api('POST', '/api/keys/bulk-time', { ms });
-  if(!r.ok){ showNetError(r.error); return; }
-  // Refresh keys from server
-  const cnt = myKeys().length;
-  await loadKeysFromServer();
-  const f = id => { const el=document.getElementById(id); if(el) el.value=0; };
-  f('my-bulk-days'); f('my-bulk-hours'); f('my-bulk-mins');
-  toast('success',`✓ +${msToStr(ms)} añadido a ${cnt} key${cnt!==1?'s':''}`);
-}
-
-async function addTimeBulk(){
-  if(session?.role!=='super'){ toast('danger','⊗ Sin permiso'); return; }
-  const d = parseInt(document.getElementById('bulk-days').value)||0;
-  const h = parseInt(document.getElementById('bulk-hours').value)||0;
-  const m = parseInt(document.getElementById('bulk-mins').value)||0;
-  const ms = durMs(d,h,m);
-  if(ms <= 0){ toast('warn','⚠ Define una duración mayor a 0'); return; }
-  const targetSellerId = document.getElementById('bulk-target-seller')?.value||'all';
-  const targets = targetSellerId==='all' ? allKeys : allKeys.filter(k=>k.ownerId===targetSellerId);
-  if(!targets.length){ toast('warn','⚠ Sin keys'); return; }
-  const db = await initFirebase();
-  if(!db){ showNetError(); return; }
-  const batch = {};
-  targets.forEach(u=>{ batch['keys/'+u.id+'/durationMs']=(u.durationMs||0)+ms; });
-  await db.ref().update(batch);
-  targets.forEach(u=>{ u.durationMs=(u.durationMs||0)+ms; });
-  renderMyKeys(); renderAllKeys(); updateMyStats();
-  const f = id => { const el=document.getElementById(id); if(el) el.value=0; };
-  f('bulk-days'); f('bulk-hours'); f('bulk-mins');
-  const selLabel = targetSeller === 'all' ? 'todas las keys' : `keys de ${admins.find(a=>a.id===targetSeller)?.name||targetSeller}`;
-  toast('success',`✓ +${msToStr(ms)} añadido a ${targets.length} key${targets.length!==1?'s':''} (${selLabel})`);
-}
-
-function populateBulkSellerSelect(){
-  const sel = document.getElementById('bulk-target-seller');
-  if(!sel) return;
-  const sellers = admins.filter(a => a.role !== 'super');
-  sel.innerHTML = '<option value="all">🌐 Todos los vendedores</option>';
-  sellers.forEach(a => {
-    const cnt = allKeys.filter(k => k.ownerId === a.id).length;
-    sel.innerHTML += `<option value="${a.id}">${a.name} (${cnt} keys)</option>`;
-  });
-}
-
-/* ══════════════════════════════════════
-   FIREBASE (placeholder)
-══════════════════════════════════════ */
-const FB={
-  enabled:false,
-  config:null,
-  /*
-   * ┌──────────────────────────────────────┐
-   * │  FIREBASE — PENDIENTE DE CONECTAR    │
-   * │                                      │
-   * │  Colecciones sugeridas:              │
-   * │  · /admins/{adminId}                 │
-   * │  · /keys/{keyId}                     │
-   * │                                      │
-   * │  1. Guarda config en Perfil          │
-   * │  2. Descomenta los imports abajo     │
-   * │  3. Reemplaza saveStorage() con      │
-   * │     escrituras a Firestore           │
-   * └──────────────────────────────────────┘
-   */
-  async load(cfg){
-    // const {initializeApp}=await import('https://www.gstatic.com/firebasejs/10.x/firebase-app.js');
-    // const {getFirestore,collection,getDocs,setDoc,deleteDoc,doc}=await import('https://www.gstatic.com/firebasejs/10.x/firebase-firestore.js');
-    // const app=initializeApp(cfg);
-    // this.db=getFirestore(app);
-    // this.enabled=true;
-    console.log('[Firebase] Config:', cfg);
-    toast('warn','🔥 Firebase: integración pendiente de activar');
-  }
-};
-
-function loadFirebaseConfig(){
-  const s=localStorage.getItem('sc_fb_config');
-  if(!s) return;
-  const c=JSON.parse(s);
-  const f=id=>document.getElementById(id);
-  if(f('fb-apikey'))     f('fb-apikey').value=c.apiKey||'';
-  if(f('fb-authdomain')) f('fb-authdomain').value=c.authDomain||'';
-  if(f('fb-projectid'))  f('fb-projectid').value=c.projectId||'';
-  if(f('fb-dburl'))      f('fb-dburl').value=c.databaseURL||'';
-}
-function saveFirebaseConfig(){
-  const f=id=>document.getElementById(id)?.value.trim();
-  const cfg={apiKey:f('fb-apikey'),authDomain:f('fb-authdomain'),projectId:f('fb-projectid'),databaseURL:f('fb-dburl')};
-  if(!cfg.apiKey||!cfg.projectId){ toast('warn','⚠ Completa al menos API Key y Project ID'); return; }
-  localStorage.setItem('sc_fb_config',JSON.stringify(cfg));
-  toast('success','✓ Config Firebase guardada');
-}
-function testFirebase(){
-  const s=localStorage.getItem('sc_fb_config');
-  if(!s){ toast('warn','⚠ Primero guarda la config'); return; }
-  FB.load(JSON.parse(s));
+function escHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 /* ══════════════════════════════════════
    INIT
 ══════════════════════════════════════ */
 loadStorage();
-if(session){
+// Check if we have a valid session (Firebase handles auth state)
+if(session && session.role === 'super'){
   bootApp();
+}
+
+// Android: prevent overscroll bounce
+document.body.addEventListener('touchmove', function(e){
+  if(e.target.closest('.modal') || e.target.closest('main') || e.target.closest('.cred-export-box')) return;
+  // allow scroll in scrollable containers
+}, {passive:true});
+
+// Android: fast click — remove 300ms tap delay
+document.addEventListener('touchstart', function(){}, {passive:true});
+
+// Android keyboard: push content up when keyboard opens
+if(/Android/i.test(navigator.userAgent)){
+  const origHeight = window.innerHeight;
+  window.addEventListener('resize', ()=>{
+    const current = window.innerHeight;
+    const diff = origHeight - current;
+    const main = document.querySelector('main');
+    if(main){
+      if(diff > 150){ // keyboard open
+        main.style.paddingBottom = '1rem';
+      } else {
+        main.style.paddingBottom = '';
+      }
+    }
+  });
 }
 </script>
 </body>
