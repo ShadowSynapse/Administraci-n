@@ -974,35 +974,87 @@ async function doLogin(){
   const p   = document.getElementById('login-pass').value;
   const err = document.getElementById('login-error');
   const btn = document.querySelector('#login-screen .btn-primary');
-  if(btn){ btn.textContent='Verificando...'; btn.disabled=true; }
+
+  function showErr(msg){ err.textContent=msg; err.classList.add('show'); }
+
+  if(!u){ showErr('⊗ Escribe tu usuario'); return; }
+  if(!p){ showErr('⊗ Escribe tu contraseña'); return; }
+
+  if(btn){ btn.textContent='Conectando...'; btn.disabled=true; }
+
   try {
+    showErr('◎ Conectando a Firebase...');
     const db = await initFirebase();
-    if(!db) throw new Error('Firebase no disponible');
-    // Find vendor by username
-    const snap = await db.ref('vendors').once('value');
+    if(!db){
+      showErr('⊗ Firebase no se pudo inicializar');
+      if(btn){btn.textContent='Entrar →';btn.disabled=false;}
+      return;
+    }
+
+    showErr('◎ Leyendo base de datos...');
+    let snap;
+    try {
+      snap = await db.ref('vendors').once('value');
+    } catch(dbErr) {
+      showErr('⊗ Error DB: ' + dbErr.message + ' — revisa las reglas de Firebase');
+      if(btn){btn.textContent='Entrar →';btn.disabled=false;}
+      return;
+    }
+
     const data = snap.val();
-    if(!data){ throw new Error('not_found'); }
-    // Find by username client-side (no index needed)
+    if(!data){
+      showErr('⊗ No hay datos en /vendors — agrega el super admin en Firebase Console');
+      if(btn){btn.textContent='Entrar →';btn.disabled=false;}
+      return;
+    }
+
+    showErr('◎ Buscando usuario...');
     const vid = Object.keys(data).find(id => data[id].username === u);
-    if(!vid){ throw new Error('not_found'); }
+    if(!vid){
+      const usuarios = Object.values(data).map(v=>v.username).join(', ');
+      showErr('⊗ Usuario "'+u+'" no existe — en DB hay: '+usuarios);
+      document.getElementById('login-pass').value='';
+      if(btn){btn.textContent='Entrar →';btn.disabled=false;}
+      return;
+    }
+
     const vendor = data[vid];
-    if(vendor.role !== 'super'){ throw new Error('not_super'); }
+
+    if(vendor.role !== 'super'){
+      showErr('⊗ La cuenta "'+u+'" existe pero no tiene rol super admin (rol actual: '+vendor.role+')');
+      document.getElementById('login-pass').value='';
+      if(btn){btn.textContent='Entrar →';btn.disabled=false;}
+      return;
+    }
+
+    showErr('◎ Verificando contraseña...');
     const ph = await _sha256(p + 'sc_salt_2025');
-    if(vendor.passwordHash !== ph || vendor.active===false){ throw new Error('wrong_pass'); }
-    session = { id:vid, username:vendor.username, name:vendor.name, role:vendor.role, colorIdx:vendor.colorIdx||0 };
-    saveSession();
+    if(vendor.passwordHash !== ph){
+      showErr('⊗ Contraseña incorrecta — hash esperado: '+vendor.passwordHash.slice(0,12)+'...');
+      document.getElementById('login-pass').value='';
+      if(btn){btn.textContent='Entrar →';btn.disabled=false;}
+      return;
+    }
+
+    if(vendor.active === false){
+      showErr('⊗ Cuenta desactivada');
+      if(btn){btn.textContent='Entrar →';btn.disabled=false;}
+      return;
+    }
+
     err.classList.remove('show');
+    session = { id:vid, username:vendor.username, name:vendor.name,
+                role:vendor.role, colorIdx:vendor.colorIdx||0 };
+    saveSession();
     document.getElementById('login-user').value='';
     document.getElementById('login-pass').value='';
-    if(btn){ btn.textContent='Entrar →'; btn.disabled=false; }
+    if(btn){btn.textContent='Entrar →';btn.disabled=false;}
     bootApp();
+
   } catch(e) {
-    err.textContent = e.message==='Firebase no disponible'
-      ? 'No se puede conectar a Firebase'
-      : 'Credenciales incorrectas o sin acceso super admin';
-    err.classList.add('show');
+    showErr('⊗ Error inesperado: ' + e.message);
     document.getElementById('login-pass').value='';
-    if(btn){ btn.textContent='Entrar →'; btn.disabled=false; }
+    if(btn){btn.textContent='Entrar →';btn.disabled=false;}
   }
 }
 
