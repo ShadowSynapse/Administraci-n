@@ -384,8 +384,6 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}
 .slot.empty{border-style:dashed}
 .slot.full-slot{border-color:rgba(252,92,124,.4);background:rgba(252,92,124,.06)}
 </style>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body>
 
@@ -880,17 +878,29 @@ const FIREBASE_CONFIG = {
 // ════════════════════════════════════════════════════════════════════════
 
 let _db = null;
+
+function _waitFirebase(){
+  return new Promise((res,rej)=>{
+    let tries=0;
+    const t=setInterval(()=>{
+      tries++;
+      if(window.firebase && window.firebase.database){ clearInterval(t); res(); }
+      if(tries>50){ clearInterval(t); rej(new Error('Firebase SDK no cargó — verifica conexión a internet')); }
+    },100);
+  });
+}
+
 async function initFirebase(){
   if(_db) return _db;
-  if(!window.firebase){ toast('danger','Firebase SDK no cargado'); return null; }
+  await _waitFirebase();
   if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
   _db = firebase.database();
   return _db;
 }
-async function fbGet(p){ const db=await initFirebase(); if(!db) return null; try{ return (await db.ref(p).once('value')).val(); }catch(e){ return null; } }
-async function fbSet(p,d){ const db=await initFirebase(); if(!db) return false; try{ await db.ref(p).set(d); return true; }catch(e){ return false; } }
-async function fbUpdate(p,d){ const db=await initFirebase(); if(!db) return false; try{ await db.ref(p).update(d); return true; }catch(e){ return false; } }
-async function fbRemove(p){ const db=await initFirebase(); if(!db) return false; try{ await db.ref(p).remove(); return true; }catch(e){ return false; } }
+async function fbGet(p){ await initFirebase(); return (await _db.ref(p).once('value')).val(); }
+async function fbSet(p,d){ await initFirebase(); await _db.ref(p).set(d); return true; }
+async function fbUpdate(p,d){ await initFirebase(); await _db.ref(p).update(d); return true; }
+async function fbRemove(p){ await initFirebase(); await _db.ref(p).remove(); return true; }
 async function _sha256(str){ const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str)); return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join(''); }
 
 // Legacy shim (some call sites still use api())
@@ -950,8 +960,9 @@ function saveSession(){
 }
 
 async function loadVendorsFromServer(){
-  const raw = await fbGet('vendors');
-  if(!raw){ toast('danger','⊗ Error cargando vendedores de Firebase'); return; }
+  let raw;
+  try{ raw = await fbGet('vendors'); } catch(e){ toast('danger','⊗ '+e.message); return; }
+  if(!raw){ vendors=[]; renderVendors(); renderStats(); renderExportBox(); return; }
   vendors = Object.entries(raw)
     .filter(([id,v])=>v.role!=='super')
     .map(([id,v])=>({...v, id, active:v.active!==false}));
@@ -983,76 +994,28 @@ async function doLogin(){
   if(btn){ btn.textContent='Conectando...'; btn.disabled=true; }
 
   try {
-    showErr('◎ Conectando a Firebase...');
-    const db = await initFirebase();
-    if(!db){
-      showErr('⊗ Firebase no se pudo inicializar');
-      if(btn){btn.textContent='Entrar →';btn.disabled=false;}
-      return;
-    }
-
-    showErr('◎ Leyendo base de datos...');
-    let snap;
-    try {
-      snap = await db.ref('vendors').once('value');
-    } catch(dbErr) {
-      showErr('⊗ Error DB: ' + dbErr.message + ' — revisa las reglas de Firebase');
-      if(btn){btn.textContent='Entrar →';btn.disabled=false;}
-      return;
-    }
-
+    showErr('◎ Iniciando Firebase...');
+    await initFirebase();
+    showErr('◎ Buscando cuenta...');
+    const snap = await _db.ref('vendors').once('value');
     const data = snap.val();
-    if(!data){
-      showErr('⊗ No hay datos en /vendors — agrega el super admin en Firebase Console');
-      if(btn){btn.textContent='Entrar →';btn.disabled=false;}
-      return;
-    }
-
-    showErr('◎ Buscando usuario...');
+    if(!data){ showErr('⊗ Sin datos en Firebase — agrega el super admin en la consola'); if(btn){btn.textContent='Entrar →';btn.disabled=false;} return; }
     const vid = Object.keys(data).find(id => data[id].username === u);
-    if(!vid){
-      const usuarios = Object.values(data).map(v=>v.username).join(', ');
-      showErr('⊗ Usuario "'+u+'" no existe — en DB hay: '+usuarios);
-      document.getElementById('login-pass').value='';
-      if(btn){btn.textContent='Entrar →';btn.disabled=false;}
-      return;
-    }
-
+    if(!vid){ showErr('⊗ Usuario "'+u+'" no existe'); document.getElementById('login-pass').value=''; if(btn){btn.textContent='Entrar →';btn.disabled=false;} return; }
     const vendor = data[vid];
-
-    if(vendor.role !== 'super'){
-      showErr('⊗ La cuenta "'+u+'" existe pero no tiene rol super admin (rol actual: '+vendor.role+')');
-      document.getElementById('login-pass').value='';
-      if(btn){btn.textContent='Entrar →';btn.disabled=false;}
-      return;
-    }
-
-    showErr('◎ Verificando contraseña...');
+    if(vendor.role !== 'super'){ showErr('⊗ Esta cuenta no es super admin'); document.getElementById('login-pass').value=''; if(btn){btn.textContent='Entrar →';btn.disabled=false;} return; }
     const ph = await _sha256(p + 'sc_salt_2025');
-    if(vendor.passwordHash !== ph){
-      showErr('⊗ Contraseña incorrecta — hash esperado: '+vendor.passwordHash.slice(0,12)+'...');
-      document.getElementById('login-pass').value='';
-      if(btn){btn.textContent='Entrar →';btn.disabled=false;}
-      return;
-    }
-
-    if(vendor.active === false){
-      showErr('⊗ Cuenta desactivada');
-      if(btn){btn.textContent='Entrar →';btn.disabled=false;}
-      return;
-    }
-
+    if(vendor.passwordHash !== ph){ showErr('⊗ Contraseña incorrecta'); document.getElementById('login-pass').value=''; if(btn){btn.textContent='Entrar →';btn.disabled=false;} return; }
+    if(vendor.active === false){ showErr('⊗ Cuenta desactivada'); if(btn){btn.textContent='Entrar →';btn.disabled=false;} return; }
     err.classList.remove('show');
-    session = { id:vid, username:vendor.username, name:vendor.name,
-                role:vendor.role, colorIdx:vendor.colorIdx||0 };
+    session = { id:vid, username:vendor.username, name:vendor.name, role:vendor.role, colorIdx:vendor.colorIdx||0 };
     saveSession();
     document.getElementById('login-user').value='';
     document.getElementById('login-pass').value='';
     if(btn){btn.textContent='Entrar →';btn.disabled=false;}
     bootApp();
-
   } catch(e) {
-    showErr('⊗ Error inesperado: ' + e.message);
+    showErr('⊗ '+e.message);
     document.getElementById('login-pass').value='';
     if(btn){btn.textContent='Entrar →';btn.disabled=false;}
   }
@@ -1817,5 +1780,7 @@ if(/Android/i.test(navigator.userAgent)){
   });
 }
 </script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </body>
 </html>
