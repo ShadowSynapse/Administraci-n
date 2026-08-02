@@ -1353,7 +1353,7 @@ function generatePassStr(){
   return s;
 }
 
-function createVendor(){
+async function createVendor(){
   const name  = document.getElementById('c-name').value.trim();
   const uname = document.getElementById('c-user').value.trim();
   const pass  = document.getElementById('c-pass').value.trim();
@@ -1379,16 +1379,6 @@ function createVendor(){
   if(exists){ showErr(`⊗ El usuario "${uname}" ya existe`); return; }
 
   const newId = 'sc_v_'+Date.now();
-  const vendor = {
-    id: newId,
-    username: uname,
-    password: pass,
-    name: name,
-    role: 'admin',
-    colorIdx: selectedColor,
-    createdAt: Date.now(),
-    active: true
-  };
   const ph = await _sha256(pass + 'sc_salt_2025');
   const newId = 'v_' + Date.now().toString(36);
   const vendor = { id:newId, username:uname, passwordHash:ph, name, role:'admin',
@@ -1407,7 +1397,7 @@ function createVendor(){
 /* ══════════════════════════════════════
    EDIT
 ══════════════════════════════════════ */
-function openEdit(id){
+async function openEdit(id){
   const v = vendors.find(x=>x.id===id);
   if(!v) return;
   document.getElementById('e-id').value   = id;
@@ -1421,7 +1411,7 @@ function openEdit(id){
   openModal('modal-edit');
 }
 
-function saveEdit(){
+async function saveEdit(){
   const id    = document.getElementById('e-id').value;
   const name  = document.getElementById('e-name').value.trim();
   const uname = document.getElementById('e-user').value.trim();
@@ -1475,7 +1465,7 @@ async function toggleVendor(id){
 /* ══════════════════════════════════════
    DELETE
 ══════════════════════════════════════ */
-function confirmDelete(id){
+async function confirmDelete(id){
   const v=vendors.find(x=>x.id===id);
   if(!v) return;
   document.getElementById('mc-title').textContent = '⊗ Eliminar vendedor';
@@ -1499,7 +1489,7 @@ async function deleteVendor(id){
   toast('danger',`⊗ Vendedor "${v.name}" eliminado`);
 }
 
-function confirmResetAllVendors(){
+async function confirmResetAllVendors(){
   document.getElementById('mc-title').textContent = '⚠ Resetear vendedores';
   document.getElementById('mc-body').textContent  = 'Se restaurarán los 15 vendedores predeterminados. Todos los personalizados se perderán.';
   const okBtn = document.getElementById('mc-ok');
@@ -1638,7 +1628,7 @@ async function changeSuperPass(){
 /* ══════════════════════════════════════
    ACTIVITY LOG
 ══════════════════════════════════════ */
-function logAction(type, text){
+async function logAction(type, text){
   const entry = {type, text, ts: Date.now()};
   activityLog.unshift(entry);
   activityLog = activityLog.slice(0,200);
